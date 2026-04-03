@@ -11,6 +11,12 @@ const fontMono = Geist_Mono({
   variable: "--font-mono",
 })
 
+export const metadata = {
+  title: "Crystal Edge Digital | Cloud, AI & Digital Solutions",
+  description:
+    "Cloud consulting, AI integration, and digital solutions that give your business the edge. Move faster. Build smarter.",
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
