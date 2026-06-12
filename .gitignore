@@ -35,3 +35,9 @@ pnpm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# logo source backup (not for deploy)
+ced-logo-original.png
+
+# founder photo source backup (not for deploy)
+founder-photo-original.png

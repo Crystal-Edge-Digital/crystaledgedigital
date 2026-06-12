@@ -25,7 +25,7 @@ const services: {
     icon: Cloud,
     title: "Cloud Solutions",
     description:
-      "Migrate, optimize, and manage your cloud infrastructure. AWS, Azure, GCP -- we meet you where you are.",
+      "Migrate, optimize, and manage your cloud infrastructure. AWS, Azure, GCP.",
   },
   {
     icon: BrainCircuit,

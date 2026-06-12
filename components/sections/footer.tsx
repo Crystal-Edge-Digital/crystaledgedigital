@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator"
 
 const footerLinks = [
   { label: "Services", href: "#services" },
-  { label: "About", href: "#process" },
+  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -39,11 +39,11 @@ const socialLinks = [
 
 export function Footer() {
   return (
-    <footer className="px-6 pb-8 pt-16">
+    <footer className="px-6 pb-12 pt-20">
       <div className="mx-auto max-w-6xl">
         <div className="flex flex-col items-center gap-8">
-          <a href="#" className="flex items-center gap-2">
-            <CrystalIcon className="size-6 text-accent" />
+          <a href="#" className="flex items-center gap-3">
+            <CrystalIcon className="h-8 w-auto" />
             <span className="text-lg font-semibold text-foreground">
               Crystal Edge Digital
             </span>
