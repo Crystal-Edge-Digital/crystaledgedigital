@@ -15,7 +15,7 @@ export function CtaContact() {
     <section id="contact" className="px-6 py-24">
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-          Ready to move faster?
+          Get in touch
         </h2>
         <p className="mt-4 text-lg text-muted-foreground">
           Tell us about your project and we&apos;ll get back to you within 24
