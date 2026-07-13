@@ -1,0 +1,8 @@
+/* TEAM */
+	Benjamin Corbett - Founder
+	Second Brain - Autonomous Cofounder
+
+/* SITE */
+	Last update: 2026-07-13
+	Standards: HTML5, CSS3
+	Components: Next.js 16, Tailwind v4
