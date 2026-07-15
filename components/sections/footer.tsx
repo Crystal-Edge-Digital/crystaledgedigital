@@ -77,7 +77,7 @@ export function Footer() {
           <Separator />
 
           <p className="text-sm text-muted-foreground">
-            &copy; 2026 Crystal Edge Digital. All rights reserved.
+            &copy; {new Date().getFullYear()} Crystal Edge Digital. All rights reserved.
           </p>
         </div>
       </div>
