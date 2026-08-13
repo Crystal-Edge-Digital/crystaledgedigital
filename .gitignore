@@ -29,8 +29,19 @@ yarn-error.log*
 pnpm-debug.log*
 
 # env files
+.env
 .env*.local
+
+# local agent/infra config — keep out of public repo
+.mcp.json
+CLAUDE.md
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# logo source backup (not for deploy)
+ced-logo-original.png
+
+# founder photo source backup (not for deploy)
+founder-photo-original.png

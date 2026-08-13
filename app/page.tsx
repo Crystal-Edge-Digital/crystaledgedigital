@@ -1,9 +1,8 @@
 import { Navbar } from "@/components/sections/navbar"
 import { Hero } from "@/components/sections/hero"
 import { Services } from "@/components/sections/services"
-import { Stats } from "@/components/sections/stats"
-import { Process } from "@/components/sections/process"
-import { Testimonial } from "@/components/sections/testimonial"
+import { Work } from "@/components/sections/work"
+import { About } from "@/components/sections/about"
 import { CtaContact } from "@/components/sections/cta-contact"
 import { Footer } from "@/components/sections/footer"
 
@@ -14,9 +13,8 @@ export default function Home() {
       <main>
         <Hero />
         <Services />
-        <Stats />
-        <Process />
-        <Testimonial />
+        <Work />
+        <About />
         <CtaContact />
       </main>
       <Footer />

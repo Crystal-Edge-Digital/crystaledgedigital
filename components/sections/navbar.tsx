@@ -14,7 +14,8 @@ import { cn } from "@/lib/utils"
 
 const navLinks = [
   { label: "Services", href: "#services" },
-  { label: "About", href: "#process" },
+  { label: "Work", href: "#work" },
+  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ]
 
@@ -38,8 +39,8 @@ export function Navbar() {
       )}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="flex items-center gap-2 text-primary">
-          <CrystalIcon className="size-7 text-accent" />
+        <a href="#" className="flex items-center gap-3 text-primary">
+          <CrystalIcon className="h-9 w-auto" />
           <span className="text-lg font-semibold tracking-tight text-foreground">
             Crystal Edge Digital
           </span>
