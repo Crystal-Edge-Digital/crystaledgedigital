@@ -1,0 +1,129 @@
+import AxeBuilder from "@axe-core/playwright"
+import { expect, test } from "@playwright/test"
+
+const projectUrls = [
+  "https://coastalcreationsstudio.com",
+  "https://clarity-edit.io",
+  "https://coastal-properties.vercel.app",
+  "https://theresa-kennish.vercel.app",
+]
+
+test.beforeEach(async ({ page }) => {
+  await page.goto("/")
+})
+
+test("renders the complete light homepage without overflow", async ({
+  page,
+}) => {
+  await expect(page.locator("h1")).toHaveCount(1)
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: /Clear digital solutions for the way your business really works/i,
+    })
+  ).toBeVisible()
+
+  for (const id of ["services", "work", "process", "about", "faq", "contact"]) {
+    await expect(page.locator(`#${id}`)).toBeAttached()
+  }
+
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    content: document.documentElement.scrollWidth,
+  }))
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport)
+})
+
+test("service choices update the recommendation and contact field", async ({
+  page,
+}) => {
+  const choice = page.getByRole("radio", {
+    name: "Automate a repetitive workflow",
+  })
+  await choice.check()
+
+  const recommendation = page.getByTestId("recommendation")
+  await expect(recommendation).toContainText("Workflow Automation")
+  await expect(recommendation).toContainText("Workflow audit")
+  await expect(page.locator("#service-interest")).toHaveValue("automation")
+})
+
+test("primary company logo renders once in the hero and founder portrait is absent", async ({
+  page,
+}) => {
+  const artwork = page
+    .locator("#top")
+    .getByAltText(
+      "Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
+    )
+  await expect(artwork).toHaveCount(1)
+  await expect(artwork).toBeVisible()
+  await expect
+    .poll(() =>
+      artwork.evaluate((image: HTMLImageElement) => image.naturalWidth)
+    )
+    .toBeGreaterThan(0)
+  await expect(
+    page.getByAltText(
+      "Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
+    )
+  ).toHaveCount(1)
+
+  await expect(page.locator('img[src*="founder-photo"]')).toHaveCount(0)
+  await expect(
+    page.getByText("Benjamin Corbett", { exact: true })
+  ).toBeVisible()
+})
+
+test("project links preserve their verified destinations and safety attributes", async ({
+  page,
+}) => {
+  for (const href of projectUrls) {
+    const link = page.locator(`a[href="${href}"]`)
+    await expect(link).toHaveAttribute("target", "_blank")
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer")
+  }
+})
+
+test("keyboard focus begins with the skip link", async ({ page }) => {
+  await page.keyboard.press("Tab")
+  await expect(
+    page.getByRole("link", { name: "Skip to main content" })
+  ).toBeFocused()
+})
+
+test("mobile navigation is named and closes after navigation", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name === "desktop-1440",
+    "Compact navigation check"
+  )
+
+  const trigger = page.getByRole("button", { name: "Open navigation menu" })
+  await trigger.click()
+  await expect(page.getByRole("dialog")).toBeVisible()
+  await page.getByRole("dialog").getByRole("link", { name: "Process" }).click()
+  await expect(page.getByRole("dialog")).toBeHidden()
+})
+
+test("reduced motion disables smooth scrolling", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" })
+  await page.reload()
+  const scrollBehavior = await page
+    .locator("html")
+    .evaluate((element) => getComputedStyle(element).scrollBehavior)
+  expect(scrollBehavior).toBe("auto")
+})
+
+test("has no serious or critical axe violations", async ({ page }) => {
+  const results = await new AxeBuilder({ page })
+    .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
+    .analyze()
+
+  const highImpact = results.violations.filter(
+    (violation) =>
+      violation.impact === "serious" || violation.impact === "critical"
+  )
+  expect(highImpact).toEqual([])
+})
