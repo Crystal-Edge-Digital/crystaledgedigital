@@ -1,20 +1,23 @@
-import { Geist, Geist_Mono } from "next/font/google"
+import type { Metadata } from "next"
+import { Instrument_Serif, Manrope } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'})
-
-const fontMono = Geist_Mono({
+const manrope = Manrope({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-manrope",
 })
 
-export const metadata = {
-  title: "Crystal Edge Digital | Cloud, AI & Digital Solutions",
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-instrument-serif",
+})
+
+export const metadata: Metadata = {
+  title: "Crystal Edge Digital | Clear Digital Solutions",
   description:
-    "Cloud consulting, AI integration, and digital solutions that give your business the edge. Move faster. Build smarter.",
+    "Founder-led websites, workflow automation, cloud, application, and AI solutions for small and growing businesses.",
 }
 
 export default function RootLayout({
@@ -25,12 +28,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
+      className={`${manrope.variable} ${instrumentSerif.variable}`}
     >
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <body>{children}</body>
     </html>
   )
 }

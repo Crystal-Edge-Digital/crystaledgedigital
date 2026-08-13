@@ -8,7 +8,6 @@ export function CrystalIcon({ className }: { className?: string }) {
       alt="Crystal Edge Digital logo"
       width={1046}
       height={1650}
-      priority
       className={cn("h-8 w-auto", className)}
     />
   )
