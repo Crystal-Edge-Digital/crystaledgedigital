@@ -1,4 +1,3 @@
-import Image from "next/image"
 import { ArrowUpRight, ExternalLink } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -8,19 +7,8 @@ export function About() {
   return (
     <section id="about" className="section-space">
       <div className="section-shell">
-        <div className="grid overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] lg:grid-cols-2">
-          <div className="flex items-center justify-center bg-secondary/45 p-4 sm:p-8 lg:min-h-[640px]">
-            <Image
-              src="/brand/ced-editorial-lockup.png"
-              alt="Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
-              width={2000}
-              height={2000}
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="h-auto w-full max-w-[680px] object-contain"
-            />
-          </div>
-
-          <div className="flex flex-col justify-center border-t border-border p-7 sm:p-10 lg:border-t-0 lg:border-l lg:p-14">
+        <div className="grid overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="bg-secondary/45 p-7 sm:p-10 lg:p-14">
             <p className="eyebrow">Meet the founder</p>
             <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
               Benjamin Corbett
@@ -33,6 +21,9 @@ export function About() {
                 AWS Certified
               </Badge>
             </div>
+          </div>
+
+          <div className="flex flex-col justify-center border-t border-border p-7 sm:p-10 lg:border-t-0 lg:border-l lg:p-14">
             <p className="mt-7 text-lg leading-relaxed text-muted-foreground">
               I’m a Microsoft and AWS-certified software developer who helps
               organizations turn digital problems into practical systems. My

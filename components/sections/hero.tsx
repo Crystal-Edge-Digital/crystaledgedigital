@@ -1,3 +1,4 @@
+import Image from "next/image"
 import { ArrowDownRight, ArrowRight, BadgeCheck } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -14,8 +15,8 @@ export function Hero() {
         aria-hidden="true"
       />
 
-      <div className="section-shell relative grid gap-10 py-16 md:py-20 lg:grid-cols-[1.15fr_0.85fr] lg:items-end lg:py-24">
-        <div>
+      <div className="section-shell relative grid gap-10 py-12 md:py-16 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:py-20">
+        <div className="order-last lg:order-first">
           <p className="eyebrow">Cloud • AI • Web</p>
           <h1 className="mt-5 max-w-4xl text-4xl leading-[1.06] font-bold tracking-[-0.04em] text-balance sm:text-5xl lg:text-7xl">
             Clear digital solutions for the way your business{" "}
@@ -42,13 +43,7 @@ export function Hero() {
               </a>
             </Button>
           </div>
-        </div>
-
-        <div className="rounded-2xl border border-border bg-card/90 p-6 shadow-[var(--shadow-card)] sm:p-8">
-          <p className="editorial text-3xl leading-tight sm:text-4xl">
-            Start with the problem. The technology comes next.
-          </p>
-          <div className="mt-6 flex items-start gap-3 border-t border-border pt-5">
+          <div className="mt-7 flex items-start gap-3 border-t border-border pt-5">
             <BadgeCheck
               className="mt-0.5 size-5 shrink-0 text-primary"
               aria-hidden="true"
@@ -57,6 +52,18 @@ export function Hero() {
               Microsoft & AWS certified • Practical, founder-led delivery
             </p>
           </div>
+        </div>
+
+        <div className="order-first overflow-hidden rounded-2xl border border-border bg-secondary/45 p-3 shadow-[var(--shadow-card)] sm:p-5 lg:order-last">
+          <Image
+            src="/brand/ced-editorial-lockup.png"
+            alt="Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
+            width={2000}
+            height={2000}
+            sizes="(max-width: 1024px) 100vw, 55vw"
+            className="h-auto w-full object-contain"
+            priority
+          />
         </div>
       </div>
     </section>

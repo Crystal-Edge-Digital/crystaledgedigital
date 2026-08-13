@@ -29,14 +29,17 @@ are removed.
   changes.
 - Added the supplied asset bit-identically at
   `public/brand/ced-editorial-lockup.png`.
+- Promoted the supplied editorial lockup to the primary company logo in the
+  homepage hero after founder review, with the artwork first on mobile and
+  prominent beside the hero message on desktop.
 - Replaced Geist/dark-theme behavior with Manrope, Instrument Serif, and
   light-only semantic tokens.
 - Updated shared Button, Badge, Card, Field, Input, Textarea, and Sheet states,
   including 44px controls, focus, invalid, disabled, and reduced-motion rules.
 - Centralized verified content in `lib/site-content.ts`.
 - Added focused service-interest context and a native-radio service chooser.
-- Rebuilt navigation, hero, trust strip, services, selected work, process,
-  engagement paths, founder panel, FAQ, contact, and footer.
+- Rebuilt navigation, logo-led hero, trust strip, services, selected work,
+  process, engagement paths, founder panel, FAQ, contact, and footer.
 - Removed `components/theme-provider.tsx`, portrait rendering, and
   `public/founder-photo.png`.
 - Updated repository README documentation to point future contributors to the

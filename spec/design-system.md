@@ -53,23 +53,26 @@ candidates, and small identity placements. Preserve its aspect ratio and clear
 space. Never stretch, rotate, outline, recolor with gradients, add glow, or
 redraw it.
 
-### Editorial crystal lockup
+### Primary company lockup
 
 Approved source: `Crystal Edge Digital (1).png`, 2000 × 2000 RGBA.
 Website destination: `public/brand/ced-editorial-lockup.png`.
 
-Use it as a generous editorial panel in the founder/About area and for
-proposal, case-study, social, and presentation covers. Do not use the square
-art as the small navigation mark, place text over its fine lines, crop away
-critical artwork, or regenerate it. Recommended minimum rendered widths are
-520px on desktop and 280px on mobile.
+This is the primary company logo. Give it a prominent, generous placement at
+the top of the homepage hero and use it for proposal, case-study, social, and
+presentation covers. On mobile, it appears before the hero message; on desktop,
+it anchors the hero beside that message. Do not shrink the square art into the
+navigation bar, place text over its fine lines, crop away critical artwork, or
+regenerate it. Recommended minimum rendered widths are 520px on desktop and
+280px on mobile.
 
 ### Founder treatment
 
 Keep Benjamin Corbett's name, first-person voice, Microsoft and AWS
 certifications, software-development expertise, and LinkedIn proof. Do not use
-his portrait, a headshot placeholder, or an AI-generated replacement. The
-editorial lockup occupies the portrait's former visual role.
+his portrait, a headshot placeholder, or an AI-generated replacement. Use
+typography, certifications, and founder copy to carry this section while the
+primary company lockup remains at the top of the page.
 
 ## Color system
 
@@ -239,9 +242,9 @@ Use “Request a scope.” Do not invent prices or support terms.
 
 ### Founder treatment
 
-Use the editorial lockup as the visual anchor. Retain Benjamin's name,
-certifications, first-person biography, and LinkedIn. Never render his portrait
-or a replacement headshot.
+Use a clear typographic panel with Benjamin's name, certifications,
+first-person biography, and LinkedIn. Never render his portrait or a
+replacement headshot, and do not duplicate the primary lockup from the hero.
 
 ### FAQ
 

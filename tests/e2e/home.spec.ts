@@ -48,19 +48,26 @@ test("service choices update the recommendation and contact field", async ({
   await expect(page.locator("#service-interest")).toHaveValue("automation")
 })
 
-test("brand artwork renders and founder portrait is absent", async ({
+test("primary company logo renders once in the hero and founder portrait is absent", async ({
   page,
 }) => {
-  const artwork = page.getByAltText(
-    "Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
-  )
-  await artwork.scrollIntoViewIfNeeded()
+  const artwork = page
+    .locator("#top")
+    .getByAltText(
+      "Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
+    )
+  await expect(artwork).toHaveCount(1)
   await expect(artwork).toBeVisible()
   await expect
     .poll(() =>
       artwork.evaluate((image: HTMLImageElement) => image.naturalWidth)
     )
     .toBeGreaterThan(0)
+  await expect(
+    page.getByAltText(
+      "Crystal Edge Digital editorial wordmark with etched crystal illustration and fine directional lines"
+    )
+  ).toHaveCount(1)
 
   await expect(page.locator('img[src*="founder-photo"]')).toHaveCount(0)
   await expect(
