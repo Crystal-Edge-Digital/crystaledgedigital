@@ -7,8 +7,8 @@ export function About() {
   return (
     <section id="about" className="section-space">
       <div className="section-shell">
-        <div className="grid overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-card)] lg:grid-cols-[0.72fr_1.28fr]">
-          <div className="bg-secondary/45 p-7 sm:p-10 lg:p-14">
+        <div className="grid overflow-hidden rounded-3xl border border-border bg-card/95 shadow-[var(--shadow-card)] lg:grid-cols-[0.72fr_1.28fr]">
+          <div className="bg-secondary/65 p-7 sm:p-10 lg:p-14">
             <p className="eyebrow">Meet the founder</p>
             <h2 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">
               Benjamin Corbett

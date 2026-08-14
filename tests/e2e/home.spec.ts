@@ -23,9 +23,15 @@ test("renders the complete light homepage without overflow", async ({
     })
   ).toBeVisible()
 
-  for (const id of ["services", "work", "process", "about", "faq", "contact"]) {
+  for (const id of ["services", "work", "process", "about", "contact"]) {
     await expect(page.locator(`#${id}`)).toBeAttached()
   }
+
+  await expect(page.locator("#service-chooser")).toHaveCount(0)
+  await expect(page.locator("#faq")).toHaveCount(0)
+  await expect(
+    page.getByText("Ways to work together", { exact: true })
+  ).toHaveCount(0)
 
   const dimensions = await page.evaluate(() => ({
     viewport: document.documentElement.clientWidth,
@@ -34,18 +40,41 @@ test("renders the complete light homepage without overflow", async ({
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport)
 })
 
-test("service choices update the recommendation and contact field", async ({
+test("contact uses the public info address", async ({ page }) => {
+  await expect(
+    page.getByRole("link", { name: "info@crystal-edge-digital.com" })
+  ).toHaveAttribute("href", "mailto:info@crystal-edge-digital.com")
+})
+
+test("portfolio copy and cards use the compact presentation", async ({
   page,
 }) => {
-  const choice = page.getByRole("radio", {
-    name: "Automate a repetitive workflow",
-  })
-  await choice.check()
+  await expect(
+    page.getByRole("heading", { name: "Selected work & demos." })
+  ).toBeVisible()
 
-  const recommendation = page.getByTestId("recommendation")
-  await expect(recommendation).toContainText("Workflow Automation")
-  await expect(recommendation).toContainText("Workflow audit")
-  await expect(page.locator("#service-interest")).toHaveValue("automation")
+  const card = page.getByRole("link", {
+    name: "Visit Coastal Properties project",
+  })
+  const cardBox = await card.locator('[data-slot="card"]').boundingBox()
+  const projectLinkBox = await card.getByText("Visit project").boundingBox()
+  const bottomGap =
+    (cardBox?.y ?? 0) +
+    (cardBox?.height ?? 0) -
+    ((projectLinkBox?.y ?? 0) + (projectLinkBox?.height ?? 0))
+  expect(bottomGap).toBeLessThan(60)
+})
+
+test("footer uses brand social icons without the old tagline", async ({
+  page,
+}) => {
+  const footer = page.locator("footer")
+
+  await expect(footer.locator('[data-brand-icon="linkedin"]')).toHaveCount(1)
+  await expect(footer.locator('[data-brand-icon="github"]')).toHaveCount(1)
+  await expect(
+    footer.getByText("Clear technology, practical next steps.")
+  ).toHaveCount(0)
 })
 
 test("primary company logo renders once in the hero and founder portrait is absent", async ({
@@ -73,6 +102,34 @@ test("primary company logo renders once in the hero and founder portrait is abse
   await expect(
     page.getByText("Benjamin Corbett", { exact: true })
   ).toBeVisible()
+})
+
+test("navigation uses the responsive editorial identity", async ({
+  page,
+}, testInfo) => {
+  const primaryNavigation = page.getByRole("navigation", { name: "Primary" })
+  const identityLink = primaryNavigation.getByRole("link", {
+    name: "Crystal Edge Digital",
+  })
+
+  await expect(identityLink).toBeVisible()
+  await expect(
+    primaryNavigation.locator('img[src*="ced-wordmark.svg"]')
+  ).toHaveCount(1)
+  await expect(
+    primaryNavigation.locator('img[src*="ced-compact-mark.png"]')
+  ).toHaveCount(1)
+  await expect(primaryNavigation.locator('img[src*="ced-logo"]')).toHaveCount(0)
+
+  const mobileCompanyName = primaryNavigation.getByText(
+    "Crystal Edge Digital.",
+    { exact: true }
+  )
+  if (testInfo.project.name === "mobile-375") {
+    await expect(mobileCompanyName).toBeVisible()
+  } else {
+    await expect(mobileCompanyName).toBeHidden()
+  }
 })
 
 test("project links preserve their verified destinations and safety attributes", async ({

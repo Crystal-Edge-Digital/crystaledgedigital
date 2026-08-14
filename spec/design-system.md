@@ -1,9 +1,9 @@
 ---
 name: Crystal Edge Digital Brand Design System
-version: 1.0.0
-updated: 2026-08-13
+version: 1.1.0
+updated: 2026-08-14
 status: canonical
-supersedes: dark-first glass and gradient guidance
+supersedes: warm-white teal guidance
 ---
 
 # Crystal Edge Digital Brand Design System
@@ -19,9 +19,10 @@ Crystal Edge Digital is a clear, capable, founder-led consultancy for small
 and growing businesses. Technical work should feel understandable and well
 guided—not mysterious, futuristic, or enterprise-heavy.
 
-The visual register combines a warm-white service interface, precise crystal
-geometry, restrained editorial serif moments, a calm teal accent, and
-practical pathways that help a customer choose a next step. The intended
+The visual register is named **Frosted Signal**. It combines a cool-white
+service interface, precise crystal geometry, restrained editorial serif
+moments, a mineral blue primary color, and a sparingly used marigold signal.
+The intended
 customer response is: “I can explain my problem in plain language, and
 Benjamin will help me find the right solution.”
 
@@ -32,7 +33,7 @@ Benjamin will help me find the right solution.”
 | Clear     | Plain-language outcomes and visible hierarchy      | Dense jargon and vague agency language    |
 | Capable   | Real work, certifications, precise layouts         | Invented metrics or oversized claims      |
 | Personal  | Benjamin's name and first-person copy              | Faceless agency language                  |
-| Calm      | Warm white, measured spacing, restrained motion    | Neon glow and urgency theater             |
+| Calm      | Cool white, measured spacing, restrained motion    | Neon glow and urgency theater             |
 | Modern    | Strong type pairing and modular responsive layouts | Generic AI-template gradients and blobs   |
 | Practical | Problem-led choices and concrete deliverables      | Technology lists without customer context |
 
@@ -48,10 +49,9 @@ Benjamin will help me find the right solution.”
 
 ### Compact crystal mark
 
-The existing teal faceted crystal is the compact mark for navigation, favicon
-candidates, and small identity placements. Preserve its aspect ratio and clear
-space. Never stretch, rotate, outline, recolor with gradients, add glow, or
-redraw it.
+The approved etched crystal illustration is the compact mark for navigation
+and small identity placements. Preserve its aspect ratio and clear space.
+Never stretch, rotate, recolor with gradients, add glow, or redraw it.
 
 ### Primary company lockup
 
@@ -78,52 +78,54 @@ primary company lockup remains at the top of the page.
 
 ### Raw palette
 
-| Token             |     Value | Purpose                           |
-| ----------------- | --------: | --------------------------------- |
-| `canvas`          | `#F7F8F5` | Main warm-white background        |
-| `surface`         | `#FFFFFF` | Cards, navigation, forms          |
-| `surface-crystal` | `#EAF7F5` | Selected and branded panels       |
-| `surface-frost`   | `#EAF1FA` | Alternate information panels      |
-| `ink`             | `#141718` | Primary text and controls         |
-| `ink-muted`       | `#5F696D` | Secondary text                    |
-| `border`          | `#DCE5E3` | Dividers and outlines             |
-| `teal`            | `#087F73` | Primary action and focus boundary |
-| `teal-hover`      | `#05665E` | Hover and pressed state           |
-| `teal-soft`       | `#42B7AA` | Decoration only                   |
-| `error`           | `#B42318` | Error text and borders            |
-| `success`         | `#18794E` | Confirmed success only            |
+| Token          |     Value | Purpose                               |
+| -------------- | --------: | ------------------------------------- |
+| `canvas`       | `#F7FAFB` | Main cool-white background            |
+| `surface`      | `#FFFFFF` | Cards, navigation, forms              |
+| `frost`        | `#E6F0F2` | Branded and selected surfaces         |
+| `mist`         | `#EDF3F5` | Alternate information panels          |
+| `ink`          | `#15191B` | Primary text and controls             |
+| `ink-muted`    | `#5F6A71` | Secondary text                        |
+| `border`       | `#CCD8DC` | Dividers and outlines                 |
+| `mineral`      | `#2C5865` | Primary action and focus boundary     |
+| `mineral-deep` | `#1F4652` | Hover and pressed state               |
+| `marigold`     | `#E7B849` | Small signal accents; never body text |
+| `error`        | `#B42318` | Error text and borders                |
+| `success`      | `#18794E` | Confirmed success only                |
 
 ### Semantic tokens
 
 ```css
---background: #f7f8f5;
---foreground: #141718;
+--background: #f7fafb;
+--foreground: #15191b;
 --card: #ffffff;
---card-foreground: #141718;
+--card-foreground: #15191b;
 --popover: #ffffff;
---popover-foreground: #141718;
---primary: #087f73;
+--popover-foreground: #15191b;
+--primary: #2c5865;
 --primary-foreground: #ffffff;
---primary-hover: #05665e;
---secondary: #eaf7f5;
---secondary-foreground: #141718;
---muted: #eaf1fa;
---muted-foreground: #5f696d;
---accent: #087f73;
+--primary-hover: #1f4652;
+--secondary: #e6f0f2;
+--secondary-foreground: #15191b;
+--muted: #edf3f5;
+--muted-foreground: #5f6a71;
+--accent: #2c5865;
 --accent-foreground: #ffffff;
---border: #dce5e3;
---input: #dce5e3;
---ring: #087f73;
---crystal-soft: #42b7aa;
+--signal: #e7b849;
+--signal-foreground: #2b2516;
+--border: #ccd8dc;
+--input: #c4d2d7;
+--ring: #2c5865;
+--crystal-soft: #8fb0ba;
 --destructive: #b42318;
 --success: #18794e;
 ```
 
-`#141718` on `#F7F8F5` is approximately 16.9:1. `#5F696D` on the
-canvas is approximately 5.28:1. `#087F73` on white is approximately 4.89:1.
-`#42B7AA` on white is only approximately 2.45:1, so it must never be the
-only focus or control boundary. The system is light-only; contained dark ink
-inside approved artwork does not create a dark page theme.
+Marigold is a signal, not the primary action color. Keep it to approximately
+5% of a composition: short rules and small linear details only. Do not use
+marigold circles, dots, bubbles, or large fields. Never use marigold alone for
+body text, focus boundaries, or critical status. The system is light-only;
+contained dark ink inside approved artwork does not create a dark page theme.
 
 ## Typography
 
@@ -159,20 +161,24 @@ gradient text. Keep body lines around 55–72 characters and use sentence case.
 
 ## Shape, border, and depth
 
-- Control radius: 12px.
-- Card radius: 16–20px.
-- Pill radius: 999px only for chips and badges.
-- Border: 1px `#DCE5E3`.
-- Default shadow: `0 10px 30px rgba(20, 23, 24, 0.06)`.
-- Elevated shadow: `0 16px 44px rgba(20, 23, 24, 0.10)`.
-- Prefer borders to shadows; do not use glassmorphism.
+- Control radius: 16px; action buttons use a full pill.
+- Card radius: 24px.
+- Pill radius: 999px for actions, chips, badges, and compact icon controls.
+- Border: 1px `#CCD8DC`.
+- Default shadow: `0 14px 38px rgba(36, 61, 69, 0.07)`.
+- Elevated shadow: `0 20px 52px rgba(36, 61, 69, 0.12)`.
+- Frosted panels use opaque cool gradients, not background blur or transparent
+  glassmorphism.
 
 ## Graphic language
 
-Use fine crystal-facet lines, subtle drafting grids, directional lines, small
-frost/crystal color fields, 1.5px Lucide icons, and bordered editorial project
-imagery. Avoid neon glow, blurred orbs, generic 3D prisms, autoplay animation,
-mobile carousels, or decoration that competes with content.
+Use fine crystal-facet lines, subtle drafting grids, directional lines, cool
+frost fields, 1.5px Lucide icons, and bordered editorial project imagery.
+Marigold may appear as a short rule, never as a decorative dot or circle. The
+page uses one fixed, low-contrast drafting texture behind translucent section
+surfaces so content appears to move over a continuous physical field. Avoid
+neon glow, multi-color gradients, generic 3D prisms, autoplay animation, mobile
+carousels, or decoration that competes with content.
 
 ## Motion
 
@@ -186,7 +192,7 @@ mobile carousels, or decoration that competes with content.
 ## Accessibility and interaction standards
 
 - Buttons and form controls are at least 44px high.
-- Focus has a minimum 2px `#087F73` boundary.
+- Focus has a minimum 2px `#2C5865` boundary.
 - Selected states use at least two signals such as border + fill + icon.
 - Errors use text plus icon/border, `aria-invalid`, and descriptions.
 - Status changes use `aria-live`.
@@ -198,22 +204,16 @@ mobile carousels, or decoration that competes with content.
 
 ### Navigation
 
-Warm-white sticky surface, compact mark plus wordmark, links to Services, Work,
+Cool-white sticky surface, compact mark plus wordmark, links to Services, Work,
 Process, About, and Contact, and primary “Start a project” action. Support
 default, hover, focus, scrolled, and mobile-open states.
 
 ### Buttons
 
-- Primary: teal fill, white label, deep-teal hover.
-- Secondary: white/canvas fill, ink label, border, crystal hover.
-- Text: ink or teal with underline/arrow reinforcement.
+- Primary: mineral-blue fill, white label, deep-mineral hover.
+- Secondary: white/canvas fill, ink label, border, frost hover.
+- Text: ink or mineral blue with underline/arrow reinforcement.
 - Support hover, active, focus, disabled, and loading states.
-
-### Service-choice control
-
-Use native radios within `fieldset`/`legend`. Each target is at least 44px.
-Selection updates a recommendation panel and carries into contact. Default to
-“I’m not sure yet.”
 
 ### Service cards
 
@@ -232,31 +232,19 @@ outcomes.
 2. Receive a clear recommendation and scope.
 3. Build, launch, and improve.
 
-### Engagement paths
-
-- Quick Win: audits, improvements, and small automations.
-- Build: websites, applications, AI integrations, and cloud projects.
-- Ongoing Partner: support, optimization, and iteration.
-
-Use “Request a scope.” Do not invent prices or support terms.
-
 ### Founder treatment
 
 Use a clear typographic panel with Benjamin's name, certifications,
 first-person biography, and LinkedIn. Never render his portrait or a
 replacement headshot, and do not duplicate the primary lockup from the hero.
 
-### FAQ
-
-Use native disclosure semantics or accessible primitives. Answers are concise,
-direct, indexable, and available to assistive technology.
-
 ### Contact
 
-Fields: name, email, company (optional), service interest, and project
-description. Carry the chooser selection into contact. Do not claim delivery,
-response time, success, or failure until a real path confirms it. A mail-client
-handoff must be labeled as opening a draft and must never imply the site sent it.
+Fields: name, email, company (optional), project type, and project description.
+Do not claim delivery, response time, success, or failure until a real path
+confirms it. A mail-client handoff must be labeled as opening a draft and must
+never imply the site sent it. Public inquiries route to
+`info@crystal-edge-digital.com`.
 
 ## Homepage content system
 
@@ -293,7 +281,7 @@ deadlines, outcomes, or urgency.
 ### Social announcement — 1080 × 1080
 
 Canvas/frost background, editorial lockup at 35–50%, one Manrope headline of
-eight words maximum, 96px safe area, and no more than one teal emphasis area.
+eight words maximum, 96px safe area, and no more than one marigold signal.
 
 ### LinkedIn landscape — 1200 × 627
 
@@ -308,7 +296,8 @@ image or editorial art on the right. Technology is secondary metadata.
 ### Proposal cover — US Letter / A4
 
 Use the editorial lockup generously with client name, proposal title, date,
-and wordmark on warm white. Never fill the entire cover with teal.
+and wordmark on cool white. Never fill the entire cover with mineral blue or
+marigold.
 
 ## Master prompt for future brand assets
 
@@ -320,10 +309,12 @@ Audience: small and growing businesses that need websites, workflow
 automation, cloud, application, or AI help without enterprise complexity.
 
 Use the Crystal Edge Digital light design system:
-- canvas #F7F8F5; surface #FFFFFF
-- crystal #EAF7F5; frost #EAF1FA
-- ink #141718; secondary ink #5F696D; border #DCE5E3
-- teal #087F73; deep teal #05665E
+- canvas #F7FAFB; surface #FFFFFF
+- frost #E6F0F2; mist #EDF3F5
+- ink #15191B; secondary ink #5F6A71; border #CCD8DC
+- mineral blue #2C5865; deep mineral #1F4652
+- marigold signal #E7B849 used on less than 5% of the composition, as short
+  linear details only
 - Manrope for interface/headlines
 - Instrument Serif only as a restrained editorial accent
 - fine crystal geometry, directional lines, subtle drafting grids

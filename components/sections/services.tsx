@@ -40,10 +40,10 @@ export function Services() {
             return (
               <Card
                 key={service.id}
-                className="hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[var(--shadow-card-hover)]"
+                className="hover:-translate-y-0.5 hover:border-primary/35 hover:shadow-[var(--shadow-card-hover)]"
               >
                 <CardHeader>
-                  <span className="mb-3 flex size-12 items-center justify-center rounded-xl bg-secondary text-primary">
+                  <span className="mb-3 flex size-12 items-center justify-center rounded-2xl bg-secondary text-primary ring-1 ring-primary/10">
                     <Icon className="size-6" aria-hidden="true" />
                   </span>
                   <CardTitle>{service.title}</CardTitle>
