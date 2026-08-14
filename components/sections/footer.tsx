@@ -1,83 +1,112 @@
-import { CrystalIcon } from "@/components/crystal-icon"
+import Image from "next/image"
+
 import { Separator } from "@/components/ui/separator"
+
+function LinkedInIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-5"
+      aria-hidden="true"
+      data-brand-icon="linkedin"
+    >
+      <path
+        fill="currentColor"
+        d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM3.56 9h3.55v11.45H3.56V9Z"
+      />
+    </svg>
+  )
+}
+
+function GitHubIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="size-5"
+      aria-hidden="true"
+      data-brand-icon="github"
+    >
+      <path
+        fill="currentColor"
+        d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.24c-3.34.73-4.04-1.42-4.04-1.42-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.11-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.81 5.62-5.48 5.92.43.37.81 1.1.81 2.22v3.32c0 .32.22.7.83.58A12 12 0 0 0 12 .3Z"
+      />
+    </svg>
+  )
+}
 
 const footerLinks = [
   { label: "Services", href: "#services" },
-  { label: "About", href: "#process" },
+  { label: "Work", href: "#work" },
+  { label: "Process", href: "#process" },
+  { label: "About", href: "#about" },
   { label: "Contact", href: "#contact" },
 ]
 
 const socialLinks = [
   {
-    label: "LinkedIn",
-    href: "#",
-    svg: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="size-5">
-        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-      </svg>
-    ),
+    label: "Crystal Edge Digital on LinkedIn",
+    href: "https://www.linkedin.com/company/crystal-edge-digital/",
+    icon: LinkedInIcon,
   },
   {
-    label: "GitHub",
-    href: "#",
-    svg: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="size-5">
-        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-      </svg>
-    ),
-  },
-  {
-    label: "X",
-    href: "#",
-    svg: (
-      <svg viewBox="0 0 24 24" fill="currentColor" className="size-5">
-        <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z" />
-      </svg>
-    ),
+    label: "Crystal Edge Digital on GitHub",
+    href: "https://github.com/Crystal-Edge-Digital",
+    icon: GitHubIcon,
   },
 ]
 
 export function Footer() {
   return (
-    <footer className="px-6 pb-8 pt-16">
-      <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col items-center gap-8">
-          <a href="#" className="flex items-center gap-2">
-            <CrystalIcon className="size-6 text-accent" />
-            <span className="text-lg font-semibold text-foreground">
-              Crystal Edge Digital
-            </span>
+    <footer className="border-t border-border bg-secondary/35 py-12">
+      <div className="section-shell">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+          <a
+            href="#top"
+            className="rounded-lg"
+            aria-label="Crystal Edge Digital"
+          >
+            <Image
+              src="/brand/ced-wordmark.svg"
+              alt=""
+              width={1600}
+              height={250}
+              className="h-auto w-[240px]"
+            />
           </a>
 
-          <nav className="flex flex-wrap items-center justify-center gap-6">
+          <nav className="flex flex-wrap gap-x-6 gap-y-3" aria-label="Footer">
             {footerLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                className="min-h-11 content-center rounded-md text-sm font-semibold text-muted-foreground hover:text-foreground"
               >
                 {link.label}
               </a>
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="flex gap-2">
             {socialLinks.map((social) => (
               <a
                 key={social.label}
                 href={social.href}
                 aria-label={social.label}
-                className="text-muted-foreground transition-colors hover:text-foreground"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex size-11 items-center justify-center rounded-full border border-border bg-card text-muted-foreground hover:border-primary/30 hover:bg-secondary hover:text-primary"
               >
-                {social.svg}
+                <social.icon />
               </a>
             ))}
           </div>
+        </div>
 
-          <Separator />
-
-          <p className="text-sm text-muted-foreground">
-            &copy; 2026 Crystal Edge Digital. All rights reserved.
+        <Separator className="my-8" />
+        <div className="text-sm text-muted-foreground">
+          <p>
+            &copy; {new Date().getFullYear()} Crystal Edge Digital. All rights
+            reserved.
           </p>
         </div>
       </div>

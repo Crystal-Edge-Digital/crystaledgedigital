@@ -1,55 +1,35 @@
-import { Separator } from "@/components/ui/separator"
-
-const steps = [
-  {
-    number: "01",
-    title: "Discovery",
-    description: "We learn your goals and audit your stack.",
-  },
-  {
-    number: "02",
-    title: "Build",
-    description: "We architect and build the right solution.",
-  },
-  {
-    number: "03",
-    title: "Launch & Scale",
-    description: "We deploy, monitor, and iterate with you.",
-  },
-]
+import { processSteps } from "@/lib/site-content"
 
 export function Process() {
   return (
-    <section id="process" className="px-6 py-24">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            How it works
+    <section
+      id="process"
+      className="section-space border-y border-border bg-card/70"
+    >
+      <div className="section-shell">
+        <div className="max-w-2xl">
+          <p className="eyebrow">A straightforward process</p>
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
+            From a business problem to a practical next step.
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            A straightforward process from idea to launch.
-          </p>
         </div>
 
-        <div className="grid gap-12 md:grid-cols-3">
-          {steps.map((step, i) => (
-            <div key={step.number} className="relative flex flex-col gap-4">
-              <span className="text-5xl font-bold text-accent/20">
+        <ol className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-border bg-border shadow-[var(--shadow-card)] lg:grid-cols-3">
+          {processSteps.map((step) => (
+            <li key={step.number} className="bg-background p-6 sm:p-8">
+              <span
+                className="editorial inline-flex border-b-4 border-signal pb-1 text-5xl text-primary"
+                aria-hidden="true"
+              >
                 {step.number}
               </span>
-              <h3 className="text-xl font-semibold text-foreground">
-                {step.title}
-              </h3>
-              <p className="text-muted-foreground">{step.description}</p>
-              {i < steps.length - 1 && (
-                <Separator
-                  orientation="horizontal"
-                  className="absolute -right-6 top-8 hidden w-12 md:block"
-                />
-              )}
-            </div>
+              <h3 className="mt-5 text-xl font-semibold">{step.title}</h3>
+              <p className="mt-3 leading-relaxed text-muted-foreground">
+                {step.description}
+              </p>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   )
