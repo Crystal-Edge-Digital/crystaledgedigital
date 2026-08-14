@@ -153,7 +153,7 @@ export const serviceInterests: readonly ServiceInterest[] = [
   {
     id: "unsure",
     label: "I’m not sure yet",
-    service: "A practical starting point",
+    service: "General inquiry",
     description:
       "You do not need to choose the technology first. Start with what is getting in the way, and I’ll help identify the right path.",
     deliverables: [
@@ -239,68 +239,6 @@ export const processSteps = [
     title: "Build, launch, and improve",
     description:
       "We’ll create the right solution, put it into use, and identify the next improvements from real feedback.",
-  },
-] as const
-
-export const engagementPaths = [
-  {
-    title: "Quick Win",
-    description:
-      "A focused audit, improvement, repair, or small automation when the path is already clear.",
-    examples: [
-      "Website review",
-      "Workflow improvement",
-      "Focused technical fix",
-    ],
-  },
-  {
-    title: "Build",
-    description:
-      "A defined website, application, AI integration, or cloud project taken from scope through launch.",
-    examples: ["New website", "Custom application", "Cloud or AI project"],
-  },
-  {
-    title: "Ongoing Partner",
-    description:
-      "Continued technical support, optimization, and iteration as your business and systems evolve.",
-    examples: [
-      "Product iteration",
-      "System optimization",
-      "Digital growth support",
-    ],
-  },
-] as const
-
-export const faqs = [
-  {
-    question: "What kinds of businesses do you work with?",
-    answer:
-      "I work best with small and growing businesses that need a practical digital partner without the layers of a large consultancy.",
-  },
-  {
-    question: "Do I need to know exactly what I need?",
-    answer:
-      "No. Start with the goal or the work that is getting in the way. I can help turn that into a clear recommendation and scope.",
-  },
-  {
-    question: "Can you improve an existing site or system?",
-    answer:
-      "Yes. A project can begin with an audit, a focused improvement, or a plan for rebuilding only the parts that need it.",
-  },
-  {
-    question: "Do you provide ongoing support?",
-    answer:
-      "Ongoing support can be scoped when a project needs continued optimization, maintenance, or product iteration.",
-  },
-  {
-    question: "How does a project begin?",
-    answer:
-      "It starts with a short conversation about the goal, current constraints, and the most useful first step. You do not need a finished brief.",
-  },
-  {
-    question: "How quickly will I hear back?",
-    answer:
-      "After you open the prepared email draft and send it, I’ll review the context and follow up directly. The website does not claim a fixed response time.",
   },
 ] as const
 

@@ -14,12 +14,11 @@ glassmorphism, and neon-glow treatments are superseded.
 The homepage order is:
 
 1. Navigation and hero
-2. Guided service chooser and credentials
-3. Services and selected work
-4. Process and engagement paths
-5. Founder/editorial artwork
-6. FAQ and contact
-7. Footer
+2. Credentials and services
+3. Selected work and demos
+4. Process and founder section
+5. Contact
+6. Footer
 
 ## Commands
 

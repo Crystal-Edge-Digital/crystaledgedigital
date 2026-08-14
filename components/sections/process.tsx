@@ -4,7 +4,7 @@ export function Process() {
   return (
     <section
       id="process"
-      className="section-space border-y border-border bg-card"
+      className="section-space border-y border-border bg-card/70"
     >
       <div className="section-shell">
         <div className="max-w-2xl">
@@ -14,11 +14,11 @@ export function Process() {
           </h2>
         </div>
 
-        <ol className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border lg:grid-cols-3">
+        <ol className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-border bg-border shadow-[var(--shadow-card)] lg:grid-cols-3">
           {processSteps.map((step) => (
             <li key={step.number} className="bg-background p-6 sm:p-8">
               <span
-                className="editorial text-5xl text-primary"
+                className="editorial inline-flex border-b-4 border-signal pb-1 text-5xl text-primary"
                 aria-hidden="true"
               >
                 {step.number}

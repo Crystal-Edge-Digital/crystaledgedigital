@@ -1,9 +1,8 @@
 "use client"
 
-import { type FormEvent } from "react"
+import { type FormEvent, useState } from "react"
 import { Mail } from "lucide-react"
 
-import { useServiceInterest } from "@/components/service-interest-provider"
 import { Button } from "@/components/ui/button"
 import {
   Field,
@@ -20,7 +19,7 @@ import {
 } from "@/lib/site-content"
 
 export function CtaContact() {
-  const { selected, setSelected } = useServiceInterest()
+  const [selected, setSelected] = useState<ServiceInterestId>("unsure")
 
   function openEmailDraft(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -41,7 +40,7 @@ export function CtaContact() {
       message,
     ].join("\n")
 
-    window.location.href = `mailto:benjamin@crystal-edge-digital.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    window.location.href = `mailto:info@crystal-edge-digital.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
   }
 
   return (
@@ -56,7 +55,7 @@ export function CtaContact() {
             Tell me what you are trying to accomplish or what is currently
             getting in the way. I’ll help identify the most practical next step.
           </p>
-          <div className="mt-8 rounded-2xl border border-border bg-secondary p-6">
+          <div className="mt-8 rounded-3xl border border-border bg-secondary/70 p-6">
             <p className="font-semibold">A transparent contact path</p>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
               This form prepares an email in your own mail app. Nothing is sent
@@ -64,17 +63,17 @@ export function CtaContact() {
               sending.
             </p>
             <a
-              href="mailto:benjamin@crystal-edge-digital.com"
+              href="mailto:info@crystal-edge-digital.com"
               className="mt-3 inline-flex min-h-11 items-center text-sm font-semibold text-primary-hover underline underline-offset-4"
             >
-              benjamin@crystal-edge-digital.com
+              info@crystal-edge-digital.com
             </a>
           </div>
         </div>
 
         <form
           onSubmit={openEmailDraft}
-          className="rounded-2xl border border-border bg-card p-6 shadow-[var(--shadow-card)] sm:p-8"
+          className="relative overflow-hidden rounded-3xl border border-border border-t-signal bg-card p-6 shadow-[var(--shadow-card)] sm:border-t-4 sm:p-8"
         >
           <FieldGroup>
             <div className="grid gap-5 sm:grid-cols-2">
@@ -115,9 +114,7 @@ export function CtaContact() {
             </Field>
 
             <Field>
-              <FieldLabel htmlFor="service-interest">
-                What do you need help with?
-              </FieldLabel>
+              <FieldLabel htmlFor="service-interest">Project type</FieldLabel>
               <select
                 id="service-interest"
                 name="serviceInterest"
@@ -125,7 +122,7 @@ export function CtaContact() {
                 onChange={(event) =>
                   setSelected(event.target.value as ServiceInterestId)
                 }
-                className="h-12 w-full rounded-xl border border-input bg-card px-4 text-base outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
+                className="h-12 w-full rounded-2xl border border-input bg-card px-4 text-base outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20"
               >
                 {serviceInterests.map((interest) => (
                   <option key={interest.id} value={interest.id}>
@@ -134,8 +131,7 @@ export function CtaContact() {
                 ))}
               </select>
               <FieldDescription>
-                Your choice from the service guide is carried here
-                automatically.
+                Choose the closest fit. You can include the details below.
               </FieldDescription>
             </Field>
 

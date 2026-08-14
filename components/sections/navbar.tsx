@@ -1,9 +1,9 @@
 "use client"
 
+import Image from "next/image"
 import { useEffect, useState } from "react"
 import { Menu } from "lucide-react"
 
-import { CrystalIcon } from "@/components/crystal-icon"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -37,19 +37,38 @@ export function Navbar() {
       className={cn(
         "fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,box-shadow] duration-200",
         scrolled
-          ? "border-border bg-background/95 shadow-[0_6px_24px_rgba(20,23,24,0.05)] backdrop-blur-md"
+          ? "border-border bg-background/92 shadow-[0_8px_30px_rgba(36,61,69,0.07)] backdrop-blur-xl"
           : "border-transparent bg-background/90"
       )}
     >
       <nav
-        className="section-shell flex min-h-20 items-center justify-between"
+        className="section-shell flex min-h-16 items-center justify-between"
         aria-label="Primary"
       >
-        <a href="#top" className="flex items-center gap-3 rounded-lg">
-          <CrystalIcon className="h-10 w-auto" />
-          <span className="text-base font-bold tracking-tight sm:text-lg">
-            Crystal Edge Digital
+        <a
+          href="#top"
+          className="flex items-center gap-2 rounded-xl"
+          aria-label="Crystal Edge Digital"
+        >
+          <Image
+            src="/brand/ced-compact-mark.png"
+            alt=""
+            width={512}
+            height={512}
+            className="size-11 object-contain mix-blend-multiply sm:hidden"
+            priority
+          />
+          <span className="editorial text-lg text-[#525455] sm:hidden">
+            Crystal Edge Digital.
           </span>
+          <Image
+            src="/brand/ced-wordmark.svg"
+            alt=""
+            width={1600}
+            height={250}
+            className="hidden h-auto w-[260px] sm:block"
+            priority
+          />
         </a>
 
         <div className="hidden items-center gap-6 lg:flex">
@@ -62,7 +81,7 @@ export function Navbar() {
               {link.label}
             </a>
           ))}
-          <Button size="sm" asChild>
+          <Button size="sm" className="shadow-sm" asChild>
             <a href="#contact">Start a project</a>
           </Button>
         </div>

@@ -5,7 +5,7 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "group/button inline-flex shrink-0 items-center justify-center rounded-xl border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-[loading=true]:cursor-wait data-[loading=true]:opacity-70 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
+  "group/button inline-flex shrink-0 items-center justify-center rounded-full border border-transparent bg-clip-padding text-sm font-semibold whitespace-nowrap transition-[color,background-color,border-color,box-shadow,transform] duration-200 outline-none select-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-2 aria-invalid:ring-destructive/20 data-[loading=true]:cursor-wait data-[loading=true]:opacity-70 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
   {
     variants: {
       variant: {
@@ -22,13 +22,13 @@ const buttonVariants = cva(
       },
       size: {
         default: "h-11 gap-2 px-5",
-        xs: "h-8 gap-1 rounded-lg px-2.5 text-xs [&_svg:not([class*='size-'])]:size-3",
+        xs: "h-8 gap-1 px-2.5 text-xs [&_svg:not([class*='size-'])]:size-3",
         sm: "h-11 gap-1.5 px-4 text-sm",
         lg: "h-12 gap-2 px-6 text-base",
         icon: "size-11",
-        "icon-xs": "size-8 rounded-lg [&_svg:not([class*='size-'])]:size-3",
-        "icon-sm": "size-11 rounded-xl",
-        "icon-lg": "size-12 rounded-xl",
+        "icon-xs": "size-8 [&_svg:not([class*='size-'])]:size-3",
+        "icon-sm": "size-11",
+        "icon-lg": "size-12",
       },
     },
     defaultVariants: {
