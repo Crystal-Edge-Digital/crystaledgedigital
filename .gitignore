@@ -10,6 +10,8 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
 
 # next.js
 /.next/
@@ -30,6 +32,8 @@ pnpm-debug.log*
 
 # env files
 .env
+.env.production
+.env.stage
 .env*.local
 
 # local agent/infra config — keep out of public repo

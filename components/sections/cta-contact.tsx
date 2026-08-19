@@ -12,35 +12,46 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import {
-  getServiceInterest,
-  serviceInterests,
-  type ServiceInterestId,
-} from "@/lib/site-content"
+import { serviceInterests, type ServiceInterestId } from "@/lib/site-content"
+
+type SubmitState = "idle" | "submitting" | "success" | "error"
 
 export function CtaContact() {
   const [selected, setSelected] = useState<ServiceInterestId>("unsure")
+  const [status, setStatus] = useState<SubmitState>("idle")
 
-  function openEmailDraft(event: FormEvent<HTMLFormElement>) {
+  async function submitContactForm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
+    setStatus("submitting")
 
     const formData = new FormData(event.currentTarget)
-    const name = String(formData.get("name") ?? "")
-    const email = String(formData.get("email") ?? "")
-    const company = String(formData.get("company") ?? "")
-    const message = String(formData.get("message") ?? "")
-    const service = getServiceInterest(selected).label
-    const subject = `Project conversation: ${service}`
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Company: ${company || "Not provided"}`,
-      `Help needed: ${service}`,
-      "",
-      message,
-    ].join("\n")
+    const payload = {
+      name: String(formData.get("name") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      company: String(formData.get("company") ?? ""),
+      serviceInterest: selected,
+      message: String(formData.get("message") ?? ""),
+      website: String(formData.get("website") ?? ""),
+    }
 
-    window.location.href = `mailto:info@crystal-edge-digital.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        setStatus("error")
+        return
+      }
+
+      setStatus("success")
+      event.currentTarget.reset()
+      setSelected("unsure")
+    } catch {
+      setStatus("error")
+    }
   }
 
   return (
@@ -49,18 +60,17 @@ export function CtaContact() {
         <div>
           <p className="eyebrow">Start a conversation</p>
           <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-            You do not need a technical specification to start.
+            Contact me to discuss your projects, goals, or challenges.
           </h2>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
-            Tell me what you are trying to accomplish or what is currently
-            getting in the way. I’ll help identify the most practical next step.
+            Tell me what you are trying to accomplish and I’ll help identify the most practical next step.
           </p>
           <div className="mt-8 rounded-3xl border border-border bg-secondary/70 p-6">
-            <p className="font-semibold">A transparent contact path</p>
+            <p className="font-semibold">A direct contact path</p>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              This form prepares an email in your own mail app. Nothing is sent
-              by the website; you can review the complete message before
-              sending.
+              Submitting this form sends your message straight to our inbox
+              and we&apos;ll reply from there. Prefer email directly? Use the
+              address below instead.
             </p>
             <a
               href="mailto:info@crystal-edge-digital.com"
@@ -72,9 +82,17 @@ export function CtaContact() {
         </div>
 
         <form
-          onSubmit={openEmailDraft}
+          onSubmit={submitContactForm}
           className="relative overflow-hidden rounded-3xl border border-border border-t-signal bg-card p-6 shadow-[var(--shadow-card)] sm:border-t-4 sm:p-8"
         >
+          <input
+            type="text"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            className="absolute -left-[9999px] h-px w-px opacity-0"
+          />
           <FieldGroup>
             <div className="grid gap-5 sm:grid-cols-2">
               <Field>
@@ -150,10 +168,36 @@ export function CtaContact() {
             </Field>
           </FieldGroup>
 
-          <Button type="submit" size="lg" className="mt-7 w-full sm:w-fit">
+          <Button
+            type="submit"
+            size="lg"
+            className="mt-7 w-full sm:w-fit"
+            disabled={status === "submitting"}
+          >
             <Mail data-icon="inline-start" />
-            Open email draft
+            {status === "submitting" ? "Sending…" : "Send message"}
           </Button>
+
+          {status === "success" && (
+            <p
+              role="status"
+              className="mt-4 text-sm font-medium text-success"
+            >
+              Message sent — we&apos;ll reply within 1 business day.
+            </p>
+          )}
+          {status === "error" && (
+            <p role="alert" className="mt-4 text-sm font-medium text-destructive">
+              Something went wrong. Please try again, or email{" "}
+              <a
+                href="mailto:info@crystal-edge-digital.com"
+                className="underline underline-offset-4"
+              >
+                info@crystal-edge-digital.com
+              </a>{" "}
+              directly.
+            </p>
+          )}
         </form>
       </div>
     </section>
