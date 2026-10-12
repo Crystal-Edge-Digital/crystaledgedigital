@@ -24,7 +24,9 @@ export function CtaContact() {
     event.preventDefault()
     setStatus("submitting")
 
-    const formData = new FormData(event.currentTarget)
+    // React nulls event.currentTarget after the first await, so hold the form.
+    const form = event.currentTarget
+    const formData = new FormData(form)
     const payload = {
       name: String(formData.get("name") ?? ""),
       email: String(formData.get("email") ?? ""),
@@ -47,7 +49,7 @@ export function CtaContact() {
       }
 
       setStatus("success")
-      event.currentTarget.reset()
+      form.reset()
       setSelected("unsure")
     } catch {
       setStatus("error")
