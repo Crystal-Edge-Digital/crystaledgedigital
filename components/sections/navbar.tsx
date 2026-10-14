@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Menu } from "lucide-react"
 
@@ -14,11 +15,11 @@ import {
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Work", href: "#work" },
-  { label: "Process", href: "#process" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Services", href: "/#services" },
+  { label: "Work", href: "/#work" },
+  { label: "Process", href: "/#process" },
+  { label: "About", href: "/#about" },
+  { label: "Contact", href: "/#contact" },
 ]
 
 export function Navbar() {
@@ -45,8 +46,8 @@ export function Navbar() {
         className="section-shell flex min-h-16 items-center justify-between"
         aria-label="Primary"
       >
-        <a
-          href="#top"
+        <Link
+          href="/#top"
           className="flex items-center gap-2 rounded-xl"
           aria-label="Crystal Edge Digital"
         >
@@ -69,7 +70,7 @@ export function Navbar() {
             className="hidden h-auto w-[260px] sm:block"
             priority
           />
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-6 lg:flex">
           {navLinks.map((link) => (
@@ -82,7 +83,7 @@ export function Navbar() {
             </a>
           ))}
           <Button size="sm" className="shadow-sm" asChild>
-            <a href="#contact">Start a project</a>
+            <Link href="/#contact">Start a project</Link>
           </Button>
         </div>
 
@@ -111,9 +112,9 @@ export function Navbar() {
                 </a>
               ))}
               <Button asChild className="mt-4">
-                <a href="#contact" onClick={() => setOpen(false)}>
+                <Link href="/#contact" onClick={() => setOpen(false)}>
                   Start a project
-                </a>
+                </Link>
               </Button>
             </nav>
           </SheetContent>

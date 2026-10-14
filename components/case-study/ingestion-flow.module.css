@@ -1,0 +1,258 @@
+.figure {
+  margin: 0;
+  padding: clamp(1rem, 3vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 0.5rem);
+  background: var(--card, var(--background));
+  color: var(--foreground);
+}
+.steps,
+.chunk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.scene {
+  --gap: clamp(0.75rem, 2vw, 1.5rem);
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gap);
+  margin-top: 1.5rem;
+}
+.label {
+  margin: 0 0 1rem;
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+.document,
+.workflow,
+.index,
+.chunk {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--background);
+}
+.document {
+  min-height: 11.5rem;
+  padding: 1rem;
+}
+.workflow {
+  min-width: 0;
+  padding: 1rem;
+  background: var(--muted);
+}
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.index {
+  display: grid;
+  gap: 0.625rem;
+  padding: 1rem;
+}
+.chunks {
+  position: relative;
+  height: 7rem;
+  margin-top: 1rem;
+  pointer-events: none;
+}
+.chunk {
+  position: absolute;
+  top: calc(var(--i) * 2.5rem);
+  width: 100%;
+  height: 2rem;
+  padding: 0.25rem 0.375rem;
+  background: var(--card, var(--background));
+  font-size: 0.625rem;
+  transform-origin: top left;
+  opacity: 0;
+}
+.stored {
+  transform-origin: left center;
+}
+.figure[data-state="complete"] .marker {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .figure[data-state="waiting"] :is(.document, .stored, .question, .answer) {
+    opacity: 0;
+  }
+  .figure[data-state="playing"] .document {
+    animation: document 5.5s ease-in-out both;
+  }
+  .figure[data-state="playing"] .chunk {
+    animation: travel 4.4s ease-in-out both;
+    animation-delay: calc(0.9s + var(--i) * 0.15s);
+  }
+  .figure[data-state="playing"] .marker {
+    animation: highlight 1.4s ease-in-out both;
+    animation-delay: calc(2.4s + var(--i) * 0.35s);
+  }
+  .figure[data-state="playing"] .stored {
+    animation: fill 0.6s ease-out both;
+    animation-delay: calc(4.7s + var(--i) * 0.15s);
+  }
+  .figure[data-state="playing"] .question {
+    animation: reveal 0.6s 5.7s ease-out both;
+  }
+  .figure[data-state="playing"] .answer {
+    animation: reveal 0.6s 6.4s ease-out both;
+  }
+}
+@keyframes document {
+  0% {
+    opacity: 0;
+    transform: translateX(-1rem);
+  }
+  12%,
+  18% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  30%,
+  80% {
+    opacity: 0.15;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes travel {
+  0% {
+    opacity: 0;
+    transform: translate(var(--source-x), var(--source-y));
+  }
+  12%,
+  22% {
+    opacity: 1;
+    transform: translate(var(--source-x), var(--source-y));
+  }
+  42%,
+  68% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(var(--index-x), 0)
+      scale(var(--index-scale-x), var(--index-scale-y));
+  }
+  86% {
+    opacity: 1;
+    transform: translate(var(--index-x), var(--index-y))
+      scale(var(--index-scale-x), var(--index-scale-y));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--index-x), var(--index-y))
+      scale(var(--index-scale-x), var(--index-scale-y));
+  }
+}
+@keyframes highlight {
+  0% {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes fill {
+  from {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (max-width: 639px) {
+  .scene {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+  .source {
+    min-height: 11.5rem;
+  }
+  .document {
+    min-height: 9rem;
+  }
+  .figure[data-state="playing"] .chunk {
+    animation-name: travel-stacked;
+  }
+}
+@keyframes travel-stacked {
+  /* Fade between panels so transfers never obscure their headings or markers. */
+  0%,
+  30% {
+    opacity: 0;
+    transform: translate(var(--source-x), var(--source-y));
+  }
+  12%,
+  22% {
+    opacity: 1;
+    transform: translate(var(--source-x), var(--source-y));
+  }
+  38% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  42%,
+  68% {
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  74% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  80% {
+    opacity: 0;
+    transform: translate(var(--index-x), calc(var(--index-y) + 0.5rem))
+      scale(var(--index-scale-x), var(--index-scale-y));
+  }
+  86% {
+    opacity: 1;
+    transform: translate(var(--index-x), var(--index-y))
+      scale(var(--index-scale-x), var(--index-scale-y));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--index-x), var(--index-y))
+      scale(var(--index-scale-x), var(--index-scale-y));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .figure *,
+  .figure *::before,
+  .figure *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .replay {
+    display: none;
+  }
+}
