@@ -116,6 +116,44 @@ function Shot({
   )
 }
 
+function Diagram({
+  src,
+  alt,
+  width,
+  height,
+  caption,
+}: {
+  src: string
+  alt: string
+  width: number
+  height: number
+  caption: string
+}) {
+  return (
+    <figure>
+      <a
+        href={`${BASE}/${src}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${caption} (opens the full-size diagram)`}
+        className="block overflow-hidden rounded-2xl border border-border bg-white p-3 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-card-hover)] sm:p-5"
+      >
+        <Image
+          src={`${BASE}/${src}`}
+          alt={alt}
+          width={width}
+          height={height}
+          sizes="(max-width: 1280px) 100vw, 1200px"
+          className="h-auto w-full"
+        />
+      </a>
+      <figcaption className="mt-3 text-sm text-muted-foreground">
+        {caption} Select the diagram to open it full size.
+      </figcaption>
+    </figure>
+  )
+}
+
 function Step({
   number,
   title,
@@ -331,6 +369,23 @@ export default function CoastalPropertiesCaseStudy() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+
+            <div className="mt-14 grid gap-10">
+              <Diagram
+                src="diagram-question.webp"
+                alt="Architecture diagram: a question travels from the browser through CloudFront and API Gateway into a containerised workflow that classifies it, searches only what the person may read, answers with Claude on Bedrock, and streams the answer back"
+                width={2945}
+                height={1075}
+                caption="The life of one question, from the browser to the model and back as a stream."
+              />
+              <Diagram
+                src="diagram-ingestion.webp"
+                alt="Architecture diagram: an uploaded file triggers an event, then a workflow that reads and chunks the document, embeds each chunk, and stores it in a search index with an audience label"
+                width={2651}
+                height={938}
+                caption="How an uploaded document becomes searchable, each piece labelled with who may read it."
+              />
             </div>
 
             <div className="mt-14 grid gap-8 lg:grid-cols-2">
