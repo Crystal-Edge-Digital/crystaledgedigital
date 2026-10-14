@@ -5,6 +5,7 @@ import {
   useLayoutEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type CSSProperties,
 } from "react"
 
@@ -19,16 +20,32 @@ const steps = ["Read", "Embed", "Store"]
 const itemStyle = (index: number): CSSProperties =>
   ({ "--i": index }) as CSSProperties
 
+const REDUCED_MOTION = "(prefers-reduced-motion: reduce)"
+const subscribeMotion = (notify: () => void) => {
+  const query = window.matchMedia(REDUCED_MOTION)
+  query.addEventListener("change", notify)
+  return () => query.removeEventListener("change", notify)
+}
+const readMotion = () => window.matchMedia(REDUCED_MOTION).matches
+
 export function IngestionFlow() {
   const figureRef = useRef<HTMLElement>(null)
   const documentRef = useRef<HTMLDivElement>(null)
   const laneRef = useRef<HTMLDivElement>(null)
   const indexRef = useRef<HTMLDivElement>(null)
-  const hasStarted = useRef(false)
-  const [state, setState] = useState<"waiting" | "playing" | "complete">(
-    "waiting"
-  )
+  const [state, setState] = useState<
+    "waiting" | "playing" | "complete" | "resetting"
+  >("waiting")
   const [replay, setReplay] = useState(0)
+  const [inView, setInView] = useState(false)
+  const [paused, setPaused] = useState(false)
+  const reduced = useSyncExternalStore(subscribeMotion, readMotion, () => false)
+  // Derived, not stored: reduced motion shows the finished frame, and the first play starts on entering view.
+  const phase = reduced
+    ? "complete"
+    : state === "waiting" && inView
+      ? "playing"
+      : state
 
   useLayoutEffect(() => {
     const lane = laneRef.current
@@ -92,78 +109,64 @@ export function IngestionFlow() {
     }
   }, [replay])
 
+  // The loop only runs while the figure is on screen.
   useEffect(() => {
     const figure = figureRef.current
     if (!figure) return
 
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const finishForReducedMotion = (event: MediaQueryListEvent) => {
-      if (event.matches) {
-        hasStarted.current = true
-        setState("complete")
-      }
+    if (typeof IntersectionObserver === "undefined") {
+      const frame = window.requestAnimationFrame(() => setInView(true))
+      return () => window.cancelAnimationFrame(frame)
     }
-    const start = () => {
-      if (hasStarted.current) return
-      hasStarted.current = true
-      setState(motion.matches ? "complete" : "playing")
-    }
-    motion.addEventListener("change", finishForReducedMotion)
-
-    let observer: IntersectionObserver | undefined
-    let frame: number | undefined
-    if (typeof IntersectionObserver !== "undefined") {
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (
-            entries.some(
-              (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.35
-            )
-          ) {
-            start()
-            observer?.disconnect()
-          }
-        },
-        { threshold: 0.35 }
-      )
-      observer.observe(figure)
-    } else {
-      frame = window.requestAnimationFrame(start)
-    }
-
-    return () => {
-      observer?.disconnect()
-      if (frame !== undefined) window.cancelAnimationFrame(frame)
-      motion.removeEventListener("change", finishForReducedMotion)
-    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.intersectionRatio >= 0.35) setInView(true)
+        else if (!entry.isIntersecting) setInView(false)
+      },
+      { threshold: [0, 0.35] }
+    )
+    observer.observe(figure)
+    return () => observer.disconnect()
   }, [])
 
+  // The loop: play (7 s), hold the finished frame, fade out, start again.
   useEffect(() => {
-    if (state !== "playing") return
-    // The last answer finishes at seven seconds; replay resets this clock too.
-    const timer = window.setTimeout(() => setState("complete"), 7000)
+    if (reduced || paused || !inView || phase === "waiting") return
+    const step = {
+      playing: { after: 7000, to: "complete" },
+      complete: { after: 2800, to: "resetting" },
+      resetting: { after: 450, to: "playing" },
+    }[phase] as { after: number; to: "complete" | "resetting" | "playing" }
+    const timer = window.setTimeout(() => {
+      if (step.to === "playing") setReplay((value) => value + 1)
+      setState(step.to)
+    }, step.after)
     return () => window.clearTimeout(timer)
-  }, [state, replay])
+  }, [phase, inView, paused, reduced])
 
-  function restart() {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
-    hasStarted.current = true
-    setReplay((value) => value + 1)
-    setState("playing")
+  function togglePause() {
+    if (paused) {
+      setPaused(false)
+      setReplay((value) => value + 1)
+      setState("playing")
+    } else {
+      setPaused(true)
+      setState("complete")
+    }
   }
 
   return (
-    <figure ref={figureRef} className={styles.figure} data-state={state}>
+    <figure ref={figureRef} className={styles.figure} data-state={phase}>
       <div className="flex items-center justify-between gap-2">
         <span className="text-[0.6875rem] font-bold tracking-[0.12em] text-primary uppercase">
           Ingestion pipeline
         </span>
         <button
           type="button"
-          className={`${styles.replay} cursor-pointer rounded-lg p-2 text-xs text-muted-foreground hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary`}
-          onClick={restart}
+          className={`${styles.control} cursor-pointer rounded-lg p-2 text-xs text-muted-foreground hover:text-primary-hover focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-primary`}
+          onClick={togglePause}
         >
-          Replay
+          {paused ? "Play animation" : "Pause animation"}
         </button>
       </div>
 
@@ -208,6 +211,9 @@ export function IngestionFlow() {
                 style={itemStyle(index)}
                 className="grid justify-items-center gap-2 text-[0.6875rem] text-muted-foreground"
               >
+                {index < steps.length - 1 ? (
+                  <span className={styles.link} aria-hidden="true" />
+                ) : null}
                 <span
                   className={`${styles.marker} size-2.5 rounded-full bg-primary opacity-25`}
                   aria-hidden="true"

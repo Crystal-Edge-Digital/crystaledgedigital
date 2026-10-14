@@ -49,6 +49,32 @@
   padding: 0;
   list-style: none;
 }
+.steps > li {
+  position: relative;
+  flex: 1 1 0;
+}
+/* A line from this step's dot to the next one's, drawn in the order the chunks reach them. */
+.link {
+  position: absolute;
+  top: 0.3125rem;
+  left: 50%;
+  width: calc(100% + 0.5rem);
+  height: 2px;
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+}
+.link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.marker {
+  position: relative;
+  z-index: 1;
+}
 .index {
   display: grid;
   gap: 0.625rem;
@@ -74,11 +100,20 @@
 .stored {
   transform-origin: left center;
 }
-.figure[data-state="complete"] .marker {
+.figure:is([data-state="complete"], [data-state="resetting"]) .marker {
   opacity: 1;
+}
+.figure:is([data-state="complete"], [data-state="resetting"]) .link::after {
+  transform: scaleX(1);
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  .scene {
+    transition: opacity 0.45s ease;
+  }
+  .figure[data-state="resetting"] .scene {
+    opacity: 0;
+  }
   .figure[data-state="waiting"] :is(.document, .stored, .question, .answer) {
     opacity: 0;
   }
@@ -90,8 +125,12 @@
     animation-delay: calc(0.9s + var(--i) * 0.15s);
   }
   .figure[data-state="playing"] .marker {
-    animation: highlight 1.4s ease-in-out both;
-    animation-delay: calc(2.4s + var(--i) * 0.35s);
+    animation: highlight 1.2s ease-in-out both;
+    animation-delay: calc(2.4s + var(--i) * 0.7s);
+  }
+  .figure[data-state="playing"] .link::after {
+    animation: draw 0.4s ease-in-out both;
+    animation-delay: calc(2.65s + var(--i) * 0.7s);
   }
   .figure[data-state="playing"] .stored {
     animation: fill 0.6s ease-out both;
@@ -153,6 +192,14 @@
     opacity: 0;
     transform: translate(var(--index-x), var(--index-y))
       scale(var(--index-scale-x), var(--index-scale-y));
+  }
+}
+@keyframes draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
   }
 }
 @keyframes highlight {
@@ -252,7 +299,7 @@
     animation: none !important;
     transition: none !important;
   }
-  .replay {
+  .control {
     display: none;
   }
 }

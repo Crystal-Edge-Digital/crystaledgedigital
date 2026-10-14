@@ -48,8 +48,12 @@ test("every screenshot and diagram on the page loads", async ({ page }) => {
       () =>
         page.evaluate(
           () =>
-            [...document.images].filter((i) => !i.complete || !i.naturalWidth)
-              .length
+            [...document.images].filter(
+              // Enlarged diagrams inside a closed viewer load only when it is opened.
+              (i) =>
+                !i.closest("dialog:not([open])") &&
+                (!i.complete || !i.naturalWidth)
+            ).length
         ),
       { timeout: 10_000 }
     )
@@ -66,7 +70,9 @@ test("the animation shows its finished state when motion is reduced", async ({
   await expect(
     page.getByText("Unit 206 · $3,350 · available Nov 15")
   ).toBeVisible()
-  await expect(page.getByRole("button", { name: "Replay" })).toBeHidden()
+  await expect(
+    page.getByRole("button", { name: /pause animation|play animation/i })
+  ).toBeHidden()
   await context.close()
 })
 
@@ -82,4 +88,73 @@ test("case study has no serious or critical axe violations", async ({
       violation.impact === "serious" || violation.impact === "critical"
   )
   expect(highImpact).toEqual([])
+})
+
+test("the ingestion animation loops on its own and can be paused", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    testInfo.project.name !== "desktop-1440",
+    "timing test: one viewport is enough"
+  )
+  test.setTimeout(45_000)
+
+  const figure = page
+    .locator("figure[data-state]")
+    .filter({ hasText: /ingestion pipeline/i })
+  await figure.scrollIntoViewIfNeeded()
+
+  // Plays, holds the finished frame, then starts again without any click.
+  await expect(figure).toHaveAttribute("data-state", "playing")
+  await expect(figure).toHaveAttribute("data-state", "complete", {
+    timeout: 10_000,
+  })
+  await expect(figure).toHaveAttribute("data-state", "playing", {
+    timeout: 12_000,
+  })
+
+  // Pause freezes the finished frame; Play starts it again.
+  await figure.getByRole("button", { name: "Pause animation" }).click()
+  await expect(figure).toHaveAttribute("data-state", "complete")
+  await page.waitForTimeout(3_500)
+  await expect(figure).toHaveAttribute("data-state", "complete")
+  await figure.getByRole("button", { name: "Play animation" }).click()
+  await expect(figure).toHaveAttribute("data-state", "playing")
+})
+
+test("architecture diagrams open in an enlarged viewer that is easy to leave", async ({
+  page,
+}) => {
+  const open = page.getByRole("button", {
+    name: /Request path.*enlarged diagram/i,
+  })
+  const dialog = page.getByRole("dialog")
+  await open.scrollIntoViewIfNeeded()
+
+  // Opens enlarged, with the page behind it blurred rather than blacked out.
+  await open.click()
+  await expect(dialog).toBeVisible()
+  const backdrop = await dialog.evaluate((el) =>
+    getComputedStyle(el, "::backdrop").getPropertyValue("backdrop-filter")
+  )
+  expect(backdrop).toContain("blur")
+
+  // 1. Escape closes it and returns focus to the diagram.
+  await page.keyboard.press("Escape")
+  await expect(dialog).toBeHidden()
+  await expect(open).toBeFocused()
+
+  // 2. The Close button closes it.
+  await open.click()
+  await dialog.getByRole("button", { name: "Close" }).click()
+  await expect(dialog).toBeHidden()
+
+  // 3. Clicking the blurred background closes it, and the page scrolls again.
+  await open.click()
+  await expect(dialog).toBeVisible()
+  await page.mouse.click(4, 4)
+  await expect(dialog).toBeHidden()
+  await expect
+    .poll(() => page.evaluate(() => document.body.style.overflow))
+    .toBe("")
 })

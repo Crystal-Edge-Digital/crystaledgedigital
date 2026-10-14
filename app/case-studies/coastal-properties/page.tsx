@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
+import { DiagramViewer } from "@/components/case-study/diagram-viewer"
 import { IngestionFlow } from "@/components/case-study/ingestion-flow"
 import { CtaContact } from "@/components/sections/cta-contact"
 import { Footer } from "@/components/sections/footer"
@@ -112,44 +113,6 @@ function Shot({
           {label}
         </figcaption>
       ) : null}
-    </figure>
-  )
-}
-
-function Diagram({
-  src,
-  alt,
-  width,
-  height,
-  caption,
-}: {
-  src: string
-  alt: string
-  width: number
-  height: number
-  caption: string
-}) {
-  return (
-    <figure>
-      <a
-        href={`${BASE}/${src}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${caption} (opens the full-size diagram)`}
-        className="block overflow-hidden rounded-2xl border border-border bg-white p-3 shadow-[var(--shadow-card)] transition-shadow hover:shadow-[var(--shadow-card-hover)] sm:p-5"
-      >
-        <Image
-          src={`${BASE}/${src}`}
-          alt={alt}
-          width={width}
-          height={height}
-          sizes="(max-width: 1280px) 100vw, 1200px"
-          className="h-auto w-full"
-        />
-      </a>
-      <figcaption className="mt-3 text-sm text-muted-foreground">
-        {caption} Select the diagram to open it full size.
-      </figcaption>
     </figure>
   )
 }
@@ -316,15 +279,15 @@ export default function CoastalPropertiesCaseStudy() {
           title="Request path and ingestion path."
         >
           <div className="mt-10 grid gap-10">
-            <Diagram
-              src="diagram-question.webp"
+            <DiagramViewer
+              src={`${BASE}/diagram-question.webp`}
               alt="Architecture diagram: a question travels from the browser through Amazon CloudFront and Amazon API Gateway into a containerised AWS Lambda function that classifies it, searches only what the caller may read, generates an answer with Claude on Amazon Bedrock, and streams the answer back"
               width={2945}
               height={1075}
               caption="Request path: a question travels from the browser to the model and returns as a stream."
             />
-            <Diagram
-              src="diagram-ingestion.webp"
+            <DiagramViewer
+              src={`${BASE}/diagram-ingestion.webp`}
               alt="Architecture diagram: an uploaded file triggers an event, then an AWS Step Functions workflow that reads and chunks the document, creates an embedding for each chunk, and stores it in a vector index with an audience label"
               width={2651}
               height={938}
