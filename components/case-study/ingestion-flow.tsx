@@ -156,7 +156,7 @@ export function IngestionFlow() {
     <figure ref={figureRef} className={styles.figure} data-state={state}>
       <div className="flex items-center justify-between gap-2">
         <span className="text-[0.6875rem] font-bold tracking-[0.12em] text-primary uppercase">
-          From document to answer
+          Ingestion pipeline
         </span>
         <button
           type="button"
@@ -260,9 +260,9 @@ export function IngestionFlow() {
       </div>
 
       <figcaption className="mt-6 max-w-[65ch] text-xs leading-relaxed text-muted-foreground">
-        A property-management assistant reads a Word document, embeds rental
-        chunks labelled public for anyone to read, stores them in a search
-        index, and answers a question about available two-bedroom units.
+        An uploaded Word document is split into chunks, each labelled with its
+        audience and stored in the search index. The agent can then answer a
+        question about two-bedroom availability.
       </figcaption>
     </figure>
   )

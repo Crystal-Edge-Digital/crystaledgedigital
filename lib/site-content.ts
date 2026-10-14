@@ -204,12 +204,12 @@ export const projects: readonly Project[] = [
     href: "/case-studies/coastal-properties",
     internal: true,
     image: "/work/coastal-properties.png",
-    type: "AI assistant · case study",
+    type: "Generative AI · case study",
     problem:
-      "A property manager's answers lived in documents nobody could search, and staff-only information had to stay private.",
+      "A property manager's knowledge sat in documents that were hard to search, and some of it had to stay staff-only.",
     built:
-      "An AI assistant on AWS that learns from an uploaded document in about twenty seconds and answers each person only from what they may read.",
-    tags: ["AWS", "AI", "Terraform"],
+      "A retrieval-augmented chat agent on Amazon Bedrock that answers from uploaded documents and enforces role-based access.",
+    tags: ["Amazon Bedrock", "RAG", "Terraform"],
   },
   {
     title: "Theresa Kennish",

@@ -157,7 +157,10 @@ test("Coastal Properties opens its case study on this site, not the old demo", a
   await card.click()
   await expect(page).toHaveURL(/\/case-studies\/coastal-properties$/)
   await expect(
-    page.getByRole("heading", { level: 1, name: /learns from the documents/i })
+    page.getByRole("heading", {
+      level: 1,
+      name: /retrieval-augmented chat agent/i,
+    })
   ).toBeVisible()
 })
 

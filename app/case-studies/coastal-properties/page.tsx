@@ -11,63 +11,63 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 
 export const metadata: Metadata = {
-  title: "Case study: an assistant that learns from your documents",
+  title: "Coastal Properties: a RAG chat agent built on Amazon Bedrock",
   description:
-    "Coastal Properties: drop a Word document into a shared folder and, about twenty seconds later, residents and prospects get accurate answers from it, while staff-only documents stay private.",
+    "A retrieval-augmented chat agent for property management, built on Amazon Bedrock, Amazon S3 Vectors and AWS serverless services, with role-based access to documents.",
 }
 
 const BASE = "/case-studies/coastal-properties"
 
-const facts = [
+const glance = [
+  { label: "Industry", value: "Property management" },
   {
-    value: "About 20 seconds",
-    label: "from a document landing in the folder to a correct answer",
+    label: "Use case",
+    value: "Retrieval-augmented chat agent for leasing and resident support",
   },
   {
-    value: "Role-aware",
-    label:
-      "restricted documents are filtered inside the search, not by a prompt",
-  },
-  {
-    value: "3 environments",
-    label:
-      "dev, staging and production, with automated deploys that use short-lived credentials and no stored cloud keys",
+    label: "Core services",
+    value: "Amazon Bedrock, Amazon S3 Vectors, AWS Lambda",
   },
 ]
 
-const stack = [
-  "AWS",
-  "Python",
-  "LangGraph",
+const awsServices = [
   "Amazon Bedrock",
-  "Terraform",
-  "GitHub Actions",
+  "Amazon S3 Vectors",
+  "AWS Lambda",
+  "AWS Step Functions",
+  "Amazon EventBridge",
+  "Amazon API Gateway",
+  "Amazon Cognito",
+  "Amazon DynamoDB",
+  "Amazon CloudFront",
+  "Amazon CloudWatch",
 ]
 
-const underTheHood = [
+const alsoUsed = ["Python", "LangGraph", "Terraform", "GitHub Actions"]
+
+const requirements = [
+  "Answers must be grounded in the manager’s own documents, and the agent must say so when the documents do not cover a question.",
+  "New documents must become searchable without engineering work.",
+  "Staff-only content must never be retrievable by a resident or a prospective tenant.",
+]
+
+const solution = [
   {
     title: "Ingestion",
-    body: "Each upload starts a serverless workflow that reads the file, splits it by heading, turns every piece into a numeric fingerprint and files it in a search index with an audience label.",
+    body: "Uploading a document to Amazon S3 emits an event through Amazon EventBridge that starts an AWS Step Functions workflow. AWS Lambda functions parse the file, split it into chunks by heading, create an embedding for each chunk with Amazon Titan Text Embeddings V2 on Amazon Bedrock, and store the chunk in Amazon S3 Vectors with an audience label.",
   },
   {
-    title: "Answers",
-    body: "A small workflow decides whether a message is a question or a maintenance request, searches only the passages that person may read, and streams a grounded answer. Maintenance requests become work orders.",
+    title: "Retrieval and generation",
+    body: "A containerised AWS Lambda function runs a FastAPI service and a LangGraph workflow. The workflow classifies each message, retrieves the passages the caller is permitted to read, and uses Claude Haiku 4.5 on Amazon Bedrock to generate a grounded answer that is streamed to the browser. Maintenance requests are extracted as structured data and written to Amazon DynamoDB as work orders.",
   },
   {
     title: "Access control",
-    body: "The audience label is applied inside the search itself, so restricted passages are never retrieved for the wrong role. A file in an unknown location defaults to admin-only.",
+    body: "Amazon Cognito groups (tenant and admin) determine which audiences a caller may read, and Amazon API Gateway verifies the token before the function runs. The audience filter is applied inside the vector query, so restricted passages are never retrieved for the wrong role. A document outside a known location defaults to admin-only.",
   },
   {
-    title: "Delivery",
-    body: "The whole system is infrastructure as code, in three environments. Automated deploys sign in with short-lived credentials, and every change is checked by a plan before it ships.",
+    title: "Delivery and operations",
+    body: "The environments are defined in Terraform. GitHub Actions deploys through OpenID Connect with short-lived credentials, so no AWS access keys are stored, and every infrastructure change is reviewed as a plan first. Amazon CloudWatch provides structured logs, a dashboard and alarms.",
   },
-]
-
-const next = [
-  "An admin upload page, so managers do not need a shared folder at all",
-  "A scheduled cloud sync in place of the demo folder watcher",
-  "PDF support and an evaluation set that scores answer quality",
-  "Structured queries for totals across many rows, which a text search handles less well than a lookup",
 ]
 
 function Shot({
@@ -154,18 +154,49 @@ function Diagram({
   )
 }
 
-function Step({
-  number,
+function Section({
+  eyebrow,
+  title,
+  intro,
+  tint = false,
+  children,
+}: {
+  eyebrow: string
+  title: string
+  intro?: string
+  tint?: boolean
+  children: React.ReactNode
+}) {
+  return (
+    <section className={`section-space${tint ? "bg-secondary/45" : ""}`}>
+      <div className="section-shell">
+        <p className="eyebrow">{eyebrow}</p>
+        <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
+          {title}
+        </h2>
+        {intro ? (
+          <p className="mt-5 max-w-3xl leading-relaxed text-muted-foreground">
+            {intro}
+          </p>
+        ) : null}
+        {children}
+      </div>
+    </section>
+  )
+}
+
+function Stage({
+  eyebrow,
   title,
   children,
 }: {
-  number: string
+  eyebrow: string
   title: string
   children: React.ReactNode
 }) {
   return (
     <div>
-      <p className="eyebrow">Step {number}</p>
+      <p className="eyebrow">{eyebrow}</p>
       <h3 className="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">
         {title}
       </h3>
@@ -191,226 +222,224 @@ export default function CoastalPropertiesCaseStudy() {
               <ArrowLeft className="size-4" aria-hidden="true" />
               All work
             </Link>
-            <p className="eyebrow mt-6">Case study · Reference build</p>
+            <p className="eyebrow mt-6">Case study · Generative AI on AWS</p>
             <h1 className="mt-5 max-w-4xl text-4xl leading-[1.04] font-semibold tracking-[-0.05em] text-balance sm:text-5xl lg:text-6xl">
-              An assistant that learns from the documents you already have.
+              A retrieval-augmented chat agent built on Amazon Bedrock.
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
-              Coastal Properties is a leasing and resident-support assistant for
-              a property manager. Drop a Word file into a shared folder and,
-              about twenty seconds later, residents and prospects get accurate
-              answers from it, while staff-only documents stay private.
+            <p className="mt-6 max-w-3xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+              Coastal Properties is a leasing and resident-support chat agent
+              for a property manager. It answers from the manager’s own
+              documents, stays current as documents are added, and restricts
+              what each person can retrieve according to their role.
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {stack.map((item) => (
-                <Badge
-                  key={item}
-                  className="border border-border bg-background text-foreground"
-                >
-                  {item}
-                </Badge>
-              ))}
-            </div>
 
-            <dl className="mt-12 grid gap-4 sm:grid-cols-3">
-              {facts.map((fact) => (
-                <div
-                  key={fact.value}
-                  className="rounded-2xl border border-border bg-card/95 p-6 shadow-[var(--shadow-card)]"
-                >
-                  <dt className="text-2xl font-semibold tracking-tight text-primary">
-                    {fact.value}
-                  </dt>
-                  <dd className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {fact.label}
+            <dl className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-border bg-border sm:grid-cols-3">
+              {glance.map((item) => (
+                <div key={item.label} className="bg-card p-6">
+                  <dt className="eyebrow">{item.label}</dt>
+                  <dd className="mt-2 leading-relaxed font-semibold text-foreground">
+                    {item.value}
                   </dd>
                 </div>
               ))}
             </dl>
-          </div>
-        </section>
 
-        <section className="section-space bg-secondary/45">
-          <div className="section-shell">
-            <p className="eyebrow">The idea</p>
-            <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-              Watch a document become an answer.
-            </h2>
-            <p className="mt-5 max-w-2xl text-muted-foreground">
-              Every screen below is the live system, not a mock-up, running on
-              demo data for a fictional building.
-            </p>
-
-            <div className="mt-14 grid items-start gap-8 lg:grid-cols-[1fr_1fr] lg:gap-14">
-              <Step number="1" title="Ask before anything is uploaded">
-                A prospect asks what is available to rent. No rental documents
-                exist yet, so the assistant says so and points to the leasing
-                office. It does not guess.
-              </Step>
-              <Shot
-                src="panel-before.webp"
-                alt="Website chat: asked what apartments are available, the assistant says it could not find current availability and refers the visitor to the leasing office"
-                width={760}
-                height={772}
-                className="w-full max-w-md lg:justify-self-end"
-              />
-            </div>
-
-            <div className="mt-20 grid items-center gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
-              <Step number="2" title="The manager drops in a document">
-                The property manager adds a Word document to a shared folder. No
-                developer, no dashboard, no re-training.
-              </Step>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Shot
-                  src="drive-batch1.webp"
-                  alt="Shared Drive folder named public containing available_rentals_batch1.docx"
-                  width={690}
-                  height={275}
-                  label="First upload"
-                />
-                <Shot
-                  src="drive-batch2.webp"
-                  alt="The same folder now containing two files: available_rentals_batch1.docx and available_rentals_batch2.docx"
-                  width={690}
-                  height={275}
-                  label="A second upload"
-                />
-              </div>
-            </div>
-
-            <div className="mt-20">
-              <IngestionFlow />
-            </div>
-
-            <div className="mt-20 grid gap-14 lg:grid-cols-2 lg:gap-16">
+            <div className="mt-10 grid gap-6 lg:grid-cols-[auto_1fr] lg:gap-10">
+              <p className="eyebrow pt-1">AWS services used</p>
               <div>
-                <Step number="3" title="The same question, now answered">
-                  Roughly twenty seconds later, the same question returns real
-                  units with rent, move-in dates and features, taken straight
-                  from the document that was just uploaded.
-                </Step>
-                <Shot
-                  src="panel-after.webp"
-                  alt="Website chat: the same question now lists available units with monthly rent, availability dates and features"
-                  width={760}
-                  height={1522}
-                  fade
-                  className="mt-8 w-full max-w-md"
-                />
-              </div>
-              <div>
-                <Step number="4" title="Add more, and answers combine">
-                  A second upload adds three more units. A narrower question now
-                  draws on both documents at once: Unit 206 from the first
-                  upload and Unit 108 from the second.
-                </Step>
-                <Shot
-                  src="chat-two-bedroom.webp"
-                  alt="Chat answering a two-bedroom question with two units, one from each uploaded document"
-                  width={760}
-                  height={1960}
-                  className="mt-8 w-full max-w-md"
-                />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="section-space">
-          <div className="section-shell">
-            <p className="eyebrow">Privacy by design</p>
-            <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-              Same question. Different answer. By design.
-            </h2>
-            <p className="mt-5 max-w-2xl text-muted-foreground">
-              A resident and a manager ask what occupancy was in March 2024. The
-              figure lives in a staff-only spreadsheet, so only the manager gets
-              it.
-            </p>
-            <div className="mt-10 grid gap-6 sm:grid-cols-2">
-              <Shot
-                src="role-tenant-crop.webp"
-                alt="Chat signed in as a tenant: the assistant cannot find occupancy information and refers to the leasing office"
-                width={760}
-                height={735}
-                label="Signed in as a tenant: no answer, and a referral to the leasing office."
-              />
-              <Shot
-                src="role-admin-crop.webp"
-                alt="Chat signed in as an admin: the assistant answers that March 2024 occupancy was 90.0 percent, 18 of 20 units"
-                width={760}
-                height={735}
-                label="Signed in as an admin: 90.0%, 18 of 20 units, from the same spreadsheet."
-              />
-            </div>
-            <p className="mt-8 max-w-2xl leading-relaxed text-muted-foreground">
-              The restriction is enforced inside the search, so private passages
-              are never retrieved for the wrong person. It does not depend on
-              the assistant behaving well when asked.
-            </p>
-          </div>
-        </section>
-
-        <section className="section-space bg-secondary/45">
-          <div className="section-shell">
-            <p className="eyebrow">Under the hood</p>
-            <h2 className="mt-4 max-w-3xl text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl">
-              How it is built.
-            </h2>
-            <div className="mt-10 grid gap-6 sm:grid-cols-2">
-              {underTheHood.map((item) => (
-                <Card key={item.title} className="gap-2 py-6">
-                  <CardContent className="px-6">
-                    <h3 className="text-xl font-semibold">{item.title}</h3>
-                    <p className="mt-3 leading-relaxed text-muted-foreground">
-                      {item.body}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            <div className="mt-14 grid gap-10">
-              <Diagram
-                src="diagram-question.webp"
-                alt="Architecture diagram: a question travels from the browser through CloudFront and API Gateway into a containerised workflow that classifies it, searches only what the person may read, answers with Claude on Bedrock, and streams the answer back"
-                width={2945}
-                height={1075}
-                caption="The life of one question, from the browser to the model and back as a stream."
-              />
-              <Diagram
-                src="diagram-ingestion.webp"
-                alt="Architecture diagram: an uploaded file triggers an event, then a workflow that reads and chunks the document, embeds each chunk, and stores it in a search index with an audience label"
-                width={2651}
-                height={938}
-                caption="How an uploaded document becomes searchable, each piece labelled with who may read it."
-              />
-            </div>
-
-            <div className="mt-14 grid gap-8 lg:grid-cols-2">
-              <div>
-                <h3 className="text-xl font-semibold">
-                  What it does not do yet
-                </h3>
-                <p className="mt-3 leading-relaxed text-muted-foreground">
-                  This is a reference build on demo data in a sandbox account.
-                  It is strong on lookups, such as one month, one unit or one
-                  policy. It is weaker on totals across many rows, which is a
-                  known limit of searching text.
+                <div className="flex flex-wrap gap-2">
+                  {awsServices.map((item) => (
+                    <Badge
+                      key={item}
+                      className="border border-border bg-background text-foreground"
+                    >
+                      {item}
+                    </Badge>
+                  ))}
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground">
+                  Also used: {alsoUsed.join(", ")}.
                 </p>
               </div>
-              <div>
-                <h3 className="text-xl font-semibold">What I would add next</h3>
-                <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed text-muted-foreground">
-                  {next.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </div>
             </div>
           </div>
         </section>
+
+        <Section
+          tint
+          eyebrow="Challenge"
+          title="Making property documents answerable."
+        >
+          <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:gap-14">
+            <p className="leading-relaxed text-muted-foreground">
+              A property manager’s knowledge lives in documents: leases, pet and
+              parking policies and move-out forms, alongside staff-only material
+              such as occupancy reports, work orders and vendor contracts.
+              Residents and prospective tenants ask the same questions
+              repeatedly, and the answers sit in files that are slow to search.
+            </p>
+            <div>
+              <p className="font-semibold">
+                Three requirements shaped the design:
+              </p>
+              <ul className="mt-3 list-disc space-y-2 pl-5 leading-relaxed text-muted-foreground">
+                {requirements.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Section>
+
+        <Section
+          eyebrow="Solution"
+          title="A serverless RAG pipeline on AWS."
+          intro="The agent combines two paths: an ingestion pipeline that turns documents into labelled vectors, and a retrieval workflow that answers each question from the passages the caller is permitted to read."
+        >
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            {solution.map((item) => (
+              <Card key={item.title} className="gap-2 py-6">
+                <CardContent className="px-6">
+                  <h3 className="text-xl font-semibold">{item.title}</h3>
+                  <p className="mt-3 leading-relaxed text-muted-foreground">
+                    {item.body}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </Section>
+
+        <Section
+          tint
+          eyebrow="Architecture"
+          title="Request path and ingestion path."
+        >
+          <div className="mt-10 grid gap-10">
+            <Diagram
+              src="diagram-question.webp"
+              alt="Architecture diagram: a question travels from the browser through Amazon CloudFront and Amazon API Gateway into a containerised AWS Lambda function that classifies it, searches only what the caller may read, generates an answer with Claude on Amazon Bedrock, and streams the answer back"
+              width={2945}
+              height={1075}
+              caption="Request path: a question travels from the browser to the model and returns as a stream."
+            />
+            <Diagram
+              src="diagram-ingestion.webp"
+              alt="Architecture diagram: an uploaded file triggers an event, then an AWS Step Functions workflow that reads and chunks the document, creates an embedding for each chunk, and stores it in a vector index with an audience label"
+              width={2651}
+              height={938}
+              caption="Ingestion path: an uploaded document is chunked, embedded and stored with an audience label."
+            />
+          </div>
+        </Section>
+
+        <Section
+          eyebrow="Retrieval-augmented generation"
+          title="RAG in action."
+          intro="The screenshots below are taken from the deployed development environment, using sample documents for a fictional property. They show one question before and after documents are added, and a question that draws on several documents."
+        >
+          <div className="mt-14 grid items-start gap-8 lg:grid-cols-2 lg:gap-14">
+            <Stage
+              eyebrow="Initial state"
+              title="Before documents are uploaded"
+            >
+              The knowledge base holds no availability information. The agent
+              does not speculate: it states that it could not find the answer
+              and refers the visitor to the leasing office.
+            </Stage>
+            <Shot
+              src="panel-before.webp"
+              alt="Chat agent response to a question about available apartments: it could not find current availability and refers the visitor to the leasing office"
+              width={760}
+              height={772}
+              className="w-full max-w-md lg:justify-self-end"
+            />
+          </div>
+
+          <div className="mt-20 grid items-center gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+            <Stage eyebrow="Ingestion" title="An administrator adds a document">
+              An administrator uploads a Word document to a shared Google Drive
+              folder, the document store for this environment. No further action
+              is required.
+            </Stage>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <Shot
+                src="drive-batch1.webp"
+                alt="Shared folder named public containing available_rentals_batch1.docx"
+                width={690}
+                height={275}
+                label="First document"
+              />
+              <Shot
+                src="drive-batch2.webp"
+                alt="The same folder containing two files: available_rentals_batch1.docx and available_rentals_batch2.docx"
+                width={690}
+                height={275}
+                label="Second document"
+              />
+            </div>
+          </div>
+
+          <div className="mt-20">
+            <IngestionFlow />
+          </div>
+
+          <div className="mt-20">
+            <div className="max-w-3xl">
+              <Stage eyebrow="Retrieval" title="After documents are uploaded">
+                New documents are picked up automatically. A synchronisation job
+                copies each file from Google Drive to Amazon S3, and the
+                object-created event is routed by Amazon EventBridge to an AWS
+                Step Functions workflow that chunks, embeds and indexes the
+                document. Shortly afterwards, the same question is answered from
+                the new document. Further uploads extend what the agent knows: a
+                narrower question retrieves passages from both documents, Unit
+                206 from the first and Unit 108 from the second.
+              </Stage>
+            </div>
+            <div className="mt-10 grid items-start gap-10 sm:grid-cols-2 lg:gap-14">
+              <Shot
+                src="panel-after.webp"
+                alt="Chat agent response to the same question, now listing available units with monthly rent, availability dates and features"
+                width={760}
+                height={1522}
+                fade
+                label="The same question, after the first document is uploaded."
+              />
+              <Shot
+                src="chat-two-bedroom.webp"
+                alt="Chat agent response to a two-bedroom question, listing two units, one from each uploaded document"
+                width={760}
+                height={1960}
+                label="A narrower question, after the second document is uploaded."
+              />
+            </div>
+          </div>
+        </Section>
+
+        <Section
+          tint
+          eyebrow="Access control"
+          title="Audience-aware retrieval."
+          intro="Each chunk carries an audience label (public, tenant or admin) assigned from the location of its source document. The label is applied as a filter inside the vector query, so restricted passages are never retrieved for the wrong role. In the example below, both users ask for the March 2024 occupancy rate, which is held in a staff-only report."
+        >
+          <div className="mt-10 grid gap-6 sm:grid-cols-2">
+            <Shot
+              src="role-tenant-crop.webp"
+              alt="Chat signed in as a tenant: the agent cannot find occupancy information and refers the user to the leasing office"
+              width={760}
+              height={735}
+              label="Tenant: no answer is returned, and the user is referred to the leasing office."
+            />
+            <Shot
+              src="role-admin-crop.webp"
+              alt="Chat signed in as an administrator: the agent answers that March 2024 occupancy was 90.0 percent, 18 of 20 units"
+              width={760}
+              height={735}
+              label="Administrator: 90.0% (18 of 20 units), retrieved from the same staff-only report."
+            />
+          </div>
+        </Section>
 
         <CtaContact />
       </main>

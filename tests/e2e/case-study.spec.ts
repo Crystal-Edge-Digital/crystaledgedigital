@@ -11,15 +11,21 @@ test("case study renders its story and never scrolls sideways", async ({
   page,
 }) => {
   await expect(
-    page.getByRole("heading", { level: 1, name: /learns from the documents/i })
+    page.getByRole("heading", {
+      level: 1,
+      name: /retrieval-augmented chat agent built on amazon bedrock/i,
+    })
   ).toBeVisible()
-  for (const step of [
-    "Ask before anything is uploaded",
-    "The manager drops in a document",
-    "The same question, now answered",
-    "Add more, and answers combine",
+  for (const heading of [
+    "Making property documents answerable.",
+    "A serverless RAG pipeline on AWS.",
+    "RAG in action.",
+    "Before documents are uploaded",
+    "An administrator adds a document",
+    "After documents are uploaded",
+    "Audience-aware retrieval.",
   ]) {
-    await expect(page.getByRole("heading", { name: step })).toBeVisible()
+    await expect(page.getByRole("heading", { name: heading })).toBeVisible()
   }
 
   const dimensions = await page.evaluate(() => ({
