@@ -4,7 +4,6 @@ import { expect, test } from "@playwright/test"
 const projectUrls = [
   "https://coastalcreationsstudio.com",
   "https://clarity-edit.io",
-  "https://coastal-properties.vercel.app",
   "https://theresa-kennish.vercel.app",
 ]
 
@@ -54,10 +53,12 @@ test("portfolio copy and cards use the compact presentation", async ({
   ).toBeVisible()
 
   const card = page.getByRole("link", {
-    name: "Visit Coastal Properties project",
+    name: "Read the Coastal Properties case study",
   })
   const cardBox = await card.locator('[data-slot="card"]').boundingBox()
-  const projectLinkBox = await card.getByText("Visit project").boundingBox()
+  const projectLinkBox = await card
+    .getByText("Read the case study")
+    .boundingBox()
   const bottomGap =
     (cardBox?.y ?? 0) +
     (cardBox?.height ?? 0) -
@@ -140,6 +141,27 @@ test("project links preserve their verified destinations and safety attributes",
     await expect(link).toHaveAttribute("target", "_blank")
     await expect(link).toHaveAttribute("rel", "noopener noreferrer")
   }
+})
+
+test("Coastal Properties opens its case study on this site, not the old demo", async ({
+  page,
+}) => {
+  const card = page.getByRole("link", {
+    name: "Read the Coastal Properties case study",
+  })
+  await expect(card).toHaveAttribute("href", "/case-studies/coastal-properties")
+  await expect(card).not.toHaveAttribute("target", "_blank")
+  await expect(
+    page.locator('a[href="https://coastal-properties.vercel.app"]')
+  ).toHaveCount(0)
+  await card.click()
+  await expect(page).toHaveURL(/\/case-studies\/coastal-properties$/)
+  await expect(
+    page.getByRole("heading", {
+      level: 1,
+      name: /retrieval-augmented chat agent/i,
+    })
+  ).toBeVisible()
 })
 
 test("keyboard focus begins with the skip link", async ({ page }) => {

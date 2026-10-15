@@ -1,5 +1,6 @@
 import Image from "next/image"
-import { ArrowUpRight } from "lucide-react"
+import Link from "next/link"
+import { ArrowRight, ArrowUpRight } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -24,12 +25,17 @@ export function Work() {
 
         <div className="mt-12 grid gap-6 lg:grid-cols-2">
           {projects.map((project) => (
-            <a
+            <Link
               key={project.title}
               href={project.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Visit ${project.title} project`}
+              {...(project.internal
+                ? {}
+                : { target: "_blank", rel: "noopener noreferrer" })}
+              aria-label={
+                project.internal
+                  ? `Read the ${project.title} case study`
+                  : `Visit ${project.title} project`
+              }
               className="group rounded-2xl"
             >
               <Card className="gap-3 py-5 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-[var(--shadow-card-hover)]">
@@ -46,10 +52,17 @@ export function Work() {
                   <p className="eyebrow">{project.type}</p>
                   <div className="mt-3 flex items-start justify-between gap-4">
                     <h3 className="text-2xl font-semibold">{project.title}</h3>
-                    <ArrowUpRight
-                      className="mt-1 size-5 shrink-0 text-primary"
-                      aria-hidden="true"
-                    />
+                    {project.internal ? (
+                      <ArrowRight
+                        className="mt-1 size-5 shrink-0 text-primary"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <ArrowUpRight
+                        className="mt-1 size-5 shrink-0 text-primary"
+                        aria-hidden="true"
+                      />
+                    )}
                   </div>
                   <p className="mt-3 font-semibold">{project.problem}</p>
                   <p className="mt-2 leading-relaxed text-muted-foreground">
@@ -66,11 +79,11 @@ export function Work() {
                     ))}
                   </div>
                   <span className="mt-5 inline-flex min-h-11 items-center font-semibold text-primary underline-offset-4 group-hover:underline">
-                    Visit project
+                    {project.internal ? "Read the case study" : "Visit project"}
                   </span>
                 </CardContent>
               </Card>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
