@@ -168,6 +168,8 @@ export type Project = {
   title: string
   href: string
   image: string
+  /** True when href is a page on this site (opens in the same tab and reads "Read the case study"). */
+  internal?: boolean
   type: string
   problem: string
   built: string
@@ -199,14 +201,15 @@ export const projects: readonly Project[] = [
   },
   {
     title: "Coastal Properties",
-    href: "https://coastal-properties.vercel.app",
+    href: "/case-studies/coastal-properties",
+    internal: true,
     image: "/work/coastal-properties.png",
-    type: "Hospitality website",
+    type: "Generative AI · case study",
     problem:
-      "Beachfront rentals needed a focused digital home for property information and guest questions.",
+      "A property manager's knowledge sat in documents that were hard to search, and some of it had to stay staff-only.",
     built:
-      "A property-management and rentals site with a built-in AI chat assistant for guests.",
-    tags: ["Next.js", "AI Chatbot", "Hospitality"],
+      "A retrieval-augmented chat agent on Amazon Bedrock that answers from uploaded documents and enforces role-based access.",
+    tags: ["Amazon Bedrock", "RAG", "Terraform"],
   },
   {
     title: "Theresa Kennish",
